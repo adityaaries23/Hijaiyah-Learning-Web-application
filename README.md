@@ -41,9 +41,12 @@ No installation, no build process, no configuration required.
 hijaiyah-learning-web/
 ├── index.html              # Main application entry point
 ├── scripts/
-│   ├── data.js            # Hijaiyah letters dataset (28 letters)
-│   ├── app.js             # Application state and navigation logic
-│   └── ui.js              # DOM manipulation and event handlers
+│   ├── data.js            # Browser version (no exports)
+│   ├── data.test.js       # Test version (with ES6 exports)
+│   ├── app.js             # Browser version (no exports)
+│   ├── app.test.js        # Test version (with ES6 exports)
+│   ├── ui.js              # Browser version (no exports)
+│   └── ui.test.js         # Test version (with ES6 exports)
 ├── styles/
 │   └── main.css           # All styling, responsive layout, animations
 ├── tests/
@@ -53,6 +56,48 @@ hijaiyah-learning-web/
 │   └── offline.test.js    # Offline functionality verification
 ├── package.json           # Development dependencies (testing only)
 └── README.md              # This file
+```
+
+## File Architecture
+
+The project uses a **dual-file approach** to solve ES6 module compatibility between browsers and Node.js:
+
+### Browser Files (`scripts/*.js`)
+- Used by `index.html` via `<script>` tags
+- No ES6 exports—functions and variables are global
+- Work directly in browsers without module bundlers
+- Keep the app dependency-free and offline-capable
+
+### Test Files (`scripts/*.test.js`)
+- Used by Node.js test runner
+- Include ES6 exports (`export { ... }`)
+- Import statements for Node.js module system
+- Enable proper unit testing without browser environment
+
+### Why Separate Files?
+
+Browsers and Node.js handle modules differently:
+- **Browsers**: Can't use ES6 modules with regular `<script>` tags without `type="module"`, which adds complexity
+- **Node.js**: Requires explicit exports to import code in tests
+
+This architecture keeps the browser code simple while enabling comprehensive testing.
+
+### Keeping Files in Sync
+
+When modifying code:
+1. Make changes to the browser file (`*.js`)
+2. Copy the same logic to the test file (`*.test.js`)
+3. Add `export { ... }` statements at the end of the test file
+4. Run tests to verify both versions work correctly
+
+**Example**:
+```javascript
+// app.js (browser)
+function nextLetter() { /* ... */ }
+
+// app.test.js (test)
+function nextLetter() { /* ... */ }
+export { nextLetter };  // Only difference
 ```
 
 ## Browser Compatibility
@@ -74,6 +119,14 @@ Tested and working on:
 - Screen size: 320px-1024px width
 
 ## Development
+
+### File Architecture Note
+
+The project maintains separate browser and test versions of JavaScript files (see "File Architecture" section above). When making changes:
+- Edit the browser file (`scripts/*.js`) first
+- Sync changes to the test file (`scripts/*.test.js`)
+- Ensure exports are added to test files only
+- Run tests to verify both versions work
 
 ### Running Tests
 
@@ -158,9 +211,10 @@ This is an educational project designed for simplicity. If you'd like to contrib
 
 1. Keep it simple—no external dependencies
 2. Maintain offline functionality
-3. Ensure touch targets remain at least 44x44px
-4. Test on actual devices with young children
-5. Run all tests before submitting changes
+3. Follow the dual-file architecture (browser `.js` + test `.test.js`)
+4. Ensure touch targets remain at least 44x44px
+5. Test on actual devices with young children
+6. Run all tests before submitting changes
 
 ## Credits
 

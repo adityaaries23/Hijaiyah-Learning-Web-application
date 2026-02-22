@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Test - Hijaiyah Learning</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <main class="app-container">
+    <div class="display-area">
+      <div class="letter-card">
+        <div class="letter-arabic">ا</div>
+        <div class="letter-name">Alif</div>
+      </div>
+    </div>
+    
+    <nav class="navigation">
+      <button class="nav-button prev-button" aria-label="Previous letter">◀</button>
+      <button class="nav-button next-button" aria-label="Next letter">▶</button>
+    </nav>
+  </main>
+
+  <script type="module">
+    import { HIJAIYAH_LETTERS } from './scripts/data.js';
+    import { HijaiyahApp } from './scripts/app.js';
+    import { UIManager } from './scripts/ui.js';
+
+    // Initialize the application
+    const app = new HijaiyahApp(HIJAIYAH_LETTERS);
+    const ui = new UIManager(app);
+    
+    // Initialize UI and set up event listeners
+    ui.init();
+    ui.setupEventListeners();
+
+    console.log('UI initialized. Click the navigation buttons to test!');
+  </script>
+</body>
+</html>

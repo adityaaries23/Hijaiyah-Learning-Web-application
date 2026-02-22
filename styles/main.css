@@ -1,0 +1,357 @@
+/* Hijaiyah Learning Web - Main Stylesheet */
+
+/* ===========================
+   CSS Reset and Base Styles
+   =========================== */
+
+/* CSS Reset for consistent cross-browser rendering */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* CSS Custom Properties for colors and sizes */
+:root {
+  /* Primary Colors - Bright and engaging for children */
+  --color-primary-bg: #FFD700;      /* Bright yellow background */
+  --color-primary-text: #2C3E50;    /* Dark blue-gray text */
+  --color-card-bg: #FFFFFF;         /* White card background */
+  --color-card-text: #1A1A1A;       /* Near-black for high contrast */
+  --color-button-prev: #FF6B6B;     /* Bright red for previous */
+  --color-button-next: #4ECDC4;     /* Bright teal for next */
+  --color-button-hover: #95E1D3;    /* Light teal for hover */
+  
+  /* Sizes */
+  --min-touch-target: 44px;
+  --button-size: 60px;
+  --border-radius: 20px;
+  --transition-speed: 300ms;
+  
+  /* Font Sizes - Responsive with clamp() */
+  --font-size-arabic: clamp(120px, 20vw, 240px);
+  --font-size-name: clamp(24px, 4vw, 36px);
+}
+
+/* Base HTML and Body Styles */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary-text);
+  min-height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* ===========================
+   Display Area and Letter Card
+   =========================== */
+
+/* Main container - flexbox layout for centering */
+.display-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px); /* Leave space for navigation */
+  padding: 20px;
+}
+
+/* Letter card styling */
+.letter-card {
+  background-color: var(--color-card-bg);
+  border-radius: var(--border-radius);
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  min-width: 280px;
+  max-width: 600px;
+  width: 90vw;
+  
+  /* Smooth transition properties for animations */
+  transition: transform var(--transition-speed) ease-in-out,
+              opacity var(--transition-speed) ease-in-out;
+}
+
+/* Arabic letter - large, responsive font size */
+.letter-arabic {
+  font-size: var(--font-size-arabic);
+  font-weight: bold;
+  color: var(--color-card-text);
+  line-height: 1.2;
+  font-family: 'Traditional Arabic', 'Arabic Typesetting', Tahoma, Arial, sans-serif;
+  margin-bottom: 20px;
+  
+  /* High contrast for visibility */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Letter name - smaller, readable font */
+.letter-name {
+  font-size: var(--font-size-name);
+  color: var(--color-primary-text);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+}
+
+/* Animation classes for transitions */
+.letter-card.fade-out {
+  opacity: 0;
+  transition: opacity var(--transition-speed) ease-in-out;
+}
+
+.letter-card.fade-in {
+  animation: fadeIn var(--transition-speed) ease-in-out;
+}
+
+.letter-card.slide-out-left {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.letter-card.slide-out-right {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.letter-card.slide-in-left {
+  animation: slideInLeft var(--transition-speed) ease-in-out;
+}
+
+.letter-card.slide-in-right {
+  animation: slideInRight var(--transition-speed) ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+/* ===========================
+   Navigation Buttons
+   =========================== */
+
+/* Navigation container - positioned at bottom */
+.navigation {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 0 20px;
+  z-index: 10;
+}
+
+/* Base button styles - large, rounded, touch-friendly */
+.nav-button {
+  /* Minimum 44x44px touch target, using 60px for better visibility */
+  width: var(--button-size);
+  height: var(--button-size);
+  min-width: var(--min-touch-target);
+  min-height: var(--min-touch-target);
+  
+  /* Rounded shape */
+  border-radius: 50%;
+  border: none;
+  
+  /* Typography */
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  
+  /* Layout */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Visual effects */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  
+  /* Smooth transitions */
+  transition: transform var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease,
+              background-color var(--transition-speed) ease;
+  
+  /* Remove default button styles */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+}
+
+/* Previous button - bright red */
+.prev-button {
+  background-color: var(--color-button-prev);
+}
+
+/* Next button - bright teal */
+.next-button {
+  background-color: var(--color-button-next);
+}
+
+/* Hover state - scale up and change shadow */
+.nav-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Active state - scale down for press feedback */
+.nav-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Focus state for accessibility */
+.nav-button:focus {
+  outline: 3px solid var(--color-button-hover);
+  outline-offset: 3px;
+}
+
+/* Disabled state (for animation locking) */
+.nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: scale(1);
+}
+
+
+/* ===========================
+   Responsive Design
+   =========================== */
+
+/* Phone: 320px - 767px */
+@media (min-width: 320px) and (max-width: 767px) {
+  :root {
+    /* Ensure minimum 44x44px touch targets, scale up on larger phones */
+    --button-size: clamp(44px, 12vw, 60px);
+    /* Scale letter text proportionally using viewport units */
+    --font-size-arabic: clamp(100px, 18vw, 180px);
+    --font-size-name: clamp(20px, 3.5vw, 28px);
+  }
+  
+  .letter-card {
+    padding: clamp(20px, 5vw, 40px);
+    min-width: 240px;
+    width: 85vw;
+  }
+  
+  .display-area {
+    padding: 15px;
+    min-height: calc(100vh - 90px);
+  }
+  
+  .navigation {
+    gap: clamp(20px, 8vw, 40px);
+    bottom: 15px;
+  }
+}
+
+/* Tablet: 768px - 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  :root {
+    /* Larger touch targets for tablets, maintaining 44px minimum */
+    --button-size: clamp(60px, 8vw, 70px);
+    /* Scale letter text proportionally for tablet screens */
+    --font-size-arabic: clamp(160px, 16vw, 220px);
+    --font-size-name: clamp(28px, 3.5vw, 36px);
+  }
+  
+  .letter-card {
+    padding: clamp(40px, 6vw, 60px);
+    min-width: 400px;
+    width: 70vw;
+  }
+  
+  .display-area {
+    padding: 30px;
+  }
+  
+  .navigation {
+    gap: clamp(40px, 10vw, 60px);
+    bottom: 20px;
+  }
+}
+
+/* Desktop: 1025px+ (content centered with max-width) */
+@media (min-width: 1025px) {
+  .display-area {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .letter-card {
+    max-width: 600px;
+  }
+}
+
+/* ===========================
+   Utility Classes
+   =========================== */
+
+/* Hide elements visually but keep for screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Prevent text selection for better touch experience */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Apply no-select to interactive elements */
+.letter-card,
+.nav-button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}

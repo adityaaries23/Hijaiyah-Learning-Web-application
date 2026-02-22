@@ -1,0 +1,24 @@
+{
+  "name": "hijaiyah-learning-web",
+  "version": "1.0.0",
+  "description": "Web-based educational application for learning Hijaiyah letters",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/data.test.js",
+    "test:property": "node --test tests/app.property.test.js",
+    "test:unit": "node --test tests/app.unit.test.js",
+    "test:all": "node --test tests/*.test.js"
+  },
+  "keywords": [
+    "hijaiyah",
+    "arabic",
+    "education",
+    "learning"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "fast-check": "^4.5.3",
+    "jsdom": "^28.1.0"
+  }
+}

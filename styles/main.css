@@ -162,6 +162,29 @@ body {
 
 
 /* ===========================
+   Progress Indicator
+   =========================== */
+
+.progress-indicator {
+  text-align: center;
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--color-primary-text);
+  font-weight: 600;
+  padding: 8px 0;
+  position: fixed;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+  z-index: 5;
+}
+
+.progress-current {
+  color: var(--color-button-next);
+  font-weight: 700;
+}
+
+
+/* ===========================
    Navigation Buttons
    =========================== */
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,22 @@
   <title>Hijaiyah Learning</title>
   <link rel="stylesheet" href="styles/main.css">
 </head>
+
 <body>
   <main class="app-container">
     <div class="display-area" role="region" aria-label="Letter display">
       <div class="letter-card" aria-live="polite" aria-atomic="true">
-        <div class="letter-arabic">ا</div>
+        <div class="letter-arabic" lang="ar" dir="rtl">ا</div>
         <div class="letter-name">Alif</div>
       </div>
     </div>
-    
+
+    <div class="progress-indicator" aria-label="Letter progress">
+      <span class="progress-current">1</span>
+      <span class="progress-separator"> / </span>
+      <span class="progress-total">28</span>
+    </div>
+
     <nav class="navigation" role="navigation" aria-label="Letter navigation">
       <button class="nav-button prev-button" aria-label="Previous letter">◀</button>
       <button class="nav-button next-button" aria-label="Next letter">▶</button>
@@ -25,23 +33,24 @@
   <script src="scripts/data.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/ui.js"></script>
-  
+
   <script>
     // Application initialization
     // Validates: Requirements 9.1, 9.2
     document.addEventListener('DOMContentLoaded', () => {
       // Instantiate HijaiyahApp with HIJAIYAH_LETTERS data
       const app = new HijaiyahApp(HIJAIYAH_LETTERS);
-      
+
       // Instantiate UIManager with app instance
       const uiManager = new UIManager(app);
-      
+
       // Initialize UI to display first letter
       uiManager.init();
-      
+
       // Set up event listeners for navigation and gestures
       uiManager.setupEventListeners();
     });
   </script>
 </body>
+
 </html>

@@ -2,6 +2,7 @@
  * UIManager
  * Handles all DOM manipulation and user interactions
  * Validates: Requirements 1.1, 1.2, 1.4, 9.1
+ * TEST VERSION - with ES6 exports for Node.js testing
  */
 
 class UIManager {
@@ -13,9 +14,9 @@ class UIManager {
     if (!app) {
       throw new Error('UIManager requires a HijaiyahApp instance');
     }
-    
+
     this.app = app;
-    
+
     // Cache DOM element references for performance
     this.displayArea = document.querySelector('.display-area');
     this.letterCard = document.querySelector('.letter-card');
@@ -23,13 +24,15 @@ class UIManager {
     this.letterName = document.querySelector('.letter-name');
     this.prevButton = document.querySelector('.prev-button');
     this.nextButton = document.querySelector('.next-button');
-    
+    this.progressCurrent = document.querySelector('.progress-current');
+    this.progressTotal = document.querySelector('.progress-total');
+
     // Validate that all required DOM elements exist
-    if (!this.displayArea || !this.letterCard || !this.letterArabic || 
-        !this.letterName || !this.prevButton || !this.nextButton) {
+    if (!this.displayArea || !this.letterCard || !this.letterArabic ||
+      !this.letterName || !this.prevButton || !this.nextButton) {
       throw new Error('Required DOM elements not found');
     }
-    
+
     // Touch/swipe tracking properties
     this.touchStartX = 0;
     this.touchStartY = 0;
@@ -42,6 +45,9 @@ class UIManager {
    * Validates: Requirements 9.1
    */
   init() {
+    if (this.progressTotal) {
+      this.progressTotal.textContent = this.app.getLettersCount();
+    }
     const firstLetter = this.app.getCurrentLetter();
     this.updateDisplay(firstLetter);
   }
@@ -53,11 +59,11 @@ class UIManager {
     // Add click event listeners to navigation buttons
     this.nextButton.addEventListener('click', () => this.handleNextClick());
     this.prevButton.addEventListener('click', () => this.handlePreviousClick());
-    
+
     // Add touch event listeners for swipe gestures
     this.displayArea.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
     this.displayArea.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: true });
-    
+
     // Add mouse event fallbacks for desktop testing
     this.displayArea.addEventListener('mousedown', (e) => this.handleMouseDown(e));
     this.displayArea.addEventListener('mouseup', (e) => this.handleMouseUp(e));
@@ -112,12 +118,12 @@ class UIManager {
   detectSwipe() {
     const deltaX = this.touchEndX - this.touchStartX;
     const deltaY = this.touchEndY - this.touchStartY;
-    
+
     // Ignore vertical swipes (when vertical movement is greater than horizontal)
     if (Math.abs(deltaY) > Math.abs(deltaX)) {
       return;
     }
-    
+
     // Detect left swipe (next letter)
     if (deltaX < -50) {
       this.handleSwipe('left');
@@ -146,21 +152,21 @@ class UIManager {
     if (direction === 'left') {
       // Left swipe = next letter
       this.app.nextLetter();
-      
+
       // Update display with new letter
       const newLetter = this.app.getCurrentLetter();
       this.updateDisplay(newLetter);
-      
+
       // Show transition animation
       this.showTransition('next');
     } else if (direction === 'right') {
       // Right swipe = previous letter
       this.app.previousLetter();
-      
+
       // Update display with new letter
       const newLetter = this.app.getCurrentLetter();
       this.updateDisplay(newLetter);
-      
+
       // Show transition animation
       this.showTransition('prev');
     }
@@ -190,7 +196,7 @@ class UIManager {
     // Update display with new letter
     const newLetter = this.app.getCurrentLetter();
     this.updateDisplay(newLetter);
-    
+
     // Show transition animation
     this.showTransition('next');
 
@@ -219,7 +225,7 @@ class UIManager {
     // Update display with new letter
     const newLetter = this.app.getCurrentLetter();
     this.updateDisplay(newLetter);
-    
+
     // Show transition animation
     this.showTransition('prev');
 
@@ -237,7 +243,7 @@ class UIManager {
   showTransition(direction) {
     // Remove any existing transition classes
     this.letterCard.classList.remove('slide-in-left', 'slide-in-right');
-    
+
     // Apply appropriate transition based on direction
     if (direction === 'next') {
       // Next: slide in from right
@@ -246,11 +252,20 @@ class UIManager {
       // Previous: slide in from left
       this.letterCard.classList.add('slide-in-right');
     }
-    
+
     // Remove transition class after animation completes (300ms)
     setTimeout(() => {
       this.letterCard.classList.remove('slide-in-left', 'slide-in-right');
     }, 300);
+  }
+
+  /**
+   * Update the progress indicator
+   */
+  updateProgress() {
+    if (this.progressCurrent) {
+      this.progressCurrent.textContent = this.app.getCurrentIndex() + 1;
+    }
   }
 
   /**
@@ -262,11 +277,13 @@ class UIManager {
     if (!letter || !letter.arabic || !letter.name) {
       throw new Error('Invalid letter object');
     }
-    
+
     // Update the letter card content
     this.letterArabic.textContent = letter.arabic;
     this.letterName.textContent = letter.name;
+
+    // Update progress indicator
+    this.updateProgress();
   }
 }
-
 

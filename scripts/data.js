@@ -1,6 +1,7 @@
 /**
  * Hijaiyah Letters Data
  * Contains all 28 letters of the Arabic alphabet in traditional order
+ * TEST VERSION - with ES6 exports for Node.js testing
  */
 
 const HIJAIYAH_LETTERS = [
@@ -33,5 +34,4 @@ const HIJAIYAH_LETTERS = [
   { id: 27, arabic: 'ه', name: 'Ha' },
   { id: 28, arabic: 'ي', name: 'Ya' }
 ];
-
 

@@ -7,6 +7,10 @@
   <meta name="description" content="Interactive Hijaiyah learning application for young children">
   <title>Hijaiyah Learning</title>
   <link rel="stylesheet" href="styles/main.css">
+
+  <!-- PWA Metadata -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFD700">
 </head>
 
 <body>
@@ -72,6 +76,15 @@
           }, 3000);
           localStorage.setItem('hijaiyah_visited', '1');
         }
+      }
+
+      // Register Service Worker for PWA / offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => console.log('ServiceWorker registered with scope:', reg.scope))
+            .catch(err => console.log('ServiceWorker registration failed:', err));
+        });
       }
     });
   </script>

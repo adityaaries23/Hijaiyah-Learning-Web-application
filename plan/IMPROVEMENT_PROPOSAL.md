@@ -76,7 +76,7 @@ README mentions "basic" keyboard support but it's not implemented.
 
 ---
 
-### 7. Service Worker / PWA Support
+### 7. Service Worker / PWA Support ✅ Done
 App is offline-functional but can't be installed on a home screen.
 
 **Proposed changes:**
@@ -122,7 +122,7 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 | 4 | Visual design upgrade | ⬜ Todo | 🟡 Medium | ⭐⭐⭐⭐ |
 | 5 | Swipe discovery hint | ✅ Done | 🟡 Medium | ⭐⭐⭐ |
 | 6 | Keyboard navigation | ✅ Done | 🟡 Medium | ⭐⭐⭐ |
-| 7 | Service Worker / PWA | ⬜ Todo | 🟡 Medium | ⭐⭐⭐ |
+| 7 | Service Worker / PWA | ✅ Done | 🟡 Medium | ⭐⭐⭐ |
 | 8 | Example words | ✅ Done | 🟢 Low | ⭐⭐⭐ |
 | 9 | Dark mode | ✅ Done | 🟢 Low | ⭐⭐ |
 | 10 | Test improvements | ✅ Done | 🟢 Low | ⭐⭐⭐ |
@@ -143,4 +143,4 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 | Branch | PR | Description |
 |--------|----|-------------|
 | `est` | [PR #1](https://github.com/adityaaries23/Hijaiyah-Learning-Web-application/pull/1) | `sync-check.js` + `.gitignore` update |
-| `est` | (open) | Progress indicator, audio pronunciation code, keyboard nav, dark mode, swipe hint, example words |
+| `est` | (open) | Progress indicator, audio prep, keyboard nav, dark mode, swipe hint, examples, PWA, test scripts |

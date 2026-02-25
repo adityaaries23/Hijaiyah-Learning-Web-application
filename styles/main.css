@@ -426,3 +426,45 @@ body {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
+
+
+/* ===========================
+   Dark Mode
+   =========================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary-bg: #1A1A2E;
+    /* Deep navy background */
+    --color-primary-text: #E0E0E0;
+    /* Light gray text */
+    --color-card-bg: #16213E;
+    /* Dark blue card */
+    --color-card-text: #F5F5F5;
+    /* Near-white letter */
+    --color-button-prev: #C0392B;
+    /* Deep red */
+    --color-button-next: #1A8C84;
+    /* Deep teal */
+    --color-button-hover: #148F85;
+    /* Slightly lighter teal */
+  }
+
+  .letter-card {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  }
+
+  .sound-button {
+    background-color: #2A2A4A;
+    border-color: #4ECDC4;
+    color: #E0E0E0;
+  }
+
+  .sound-button:hover {
+    background-color: #1A8C84;
+  }
+
+  .progress-indicator {
+    color: var(--color-primary-text);
+  }
+}

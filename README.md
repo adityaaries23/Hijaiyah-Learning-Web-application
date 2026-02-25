@@ -6,19 +6,23 @@ An interactive web application designed to introduce young children (ages 2+) to
 
 - **28 Hijaiyah Letters**: Complete Arabic alphabet in traditional order
 - **Touch-Optimized**: Large buttons and swipe gestures designed for small hands
-- **Offline-First**: Works without internet connection—all resources bundled locally
+- **Progressive Web App (PWA)**: Installable directly to the home screen for a native app-like experience
+- **Offline-First**: Works without an internet connection via Service Worker caching
+- **Audio Pronunciation**: Tap the speaker icon to hear the correct pronunciation
+- **Progress Tracking**: Visual indicator showing current position (e.g., 1/28)
+- **Engaging Visuals**: Dynamic background colors, bounce animations, and end-of-alphabet confetti celebration!
 - **Responsive Design**: Adapts to phones and tablets (320px-1024px)
-- **High Contrast**: Clear, readable text with bright colors to engage young learners
-- **Smooth Animations**: Gentle transitions between letters (300ms)
+- **High Contrast**: Clear, readable text with child-friendly typography (Nunito)
 - **Zero Dependencies**: Pure HTML, CSS, and JavaScript
 
 ## Quick Start
 
-1. Download or clone this repository
+1. Download or clone this repository, or host it on any web server
 2. Open `index.html` in a web browser
-3. That's it! Start learning immediately
+3. (Optional) Click "Install/Add to Home Screen" in your browser's menu to install as a PWA
+4. That's it! Start learning immediately
 
-No installation, no build process, no configuration required.
+No build process or configuration required.
 
 ## Usage
 

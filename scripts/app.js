@@ -2,6 +2,7 @@
  * HijaiyahApp Controller
  * Manages application state and navigation logic
  * Validates: Requirements 2.2, 2.3, 2.4, 2.5
+ * TEST VERSION - with ES6 exports for Node.js testing
  */
 
 class HijaiyahApp {
@@ -102,5 +103,4 @@ class HijaiyahApp {
     return this.state.letters.length;
   }
 }
-
 

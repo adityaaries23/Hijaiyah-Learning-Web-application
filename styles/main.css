@@ -5,7 +5,9 @@
    =========================== */
 
 /* CSS Reset for consistent cross-browser rendering */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -14,20 +16,27 @@
 /* CSS Custom Properties for colors and sizes */
 :root {
   /* Primary Colors - Bright and engaging for children */
-  --color-primary-bg: #FFD700;      /* Bright yellow background */
-  --color-primary-text: #2C3E50;    /* Dark blue-gray text */
-  --color-card-bg: #FFFFFF;         /* White card background */
-  --color-card-text: #1A1A1A;       /* Near-black for high contrast */
-  --color-button-prev: #FF6B6B;     /* Bright red for previous */
-  --color-button-next: #4ECDC4;     /* Bright teal for next */
-  --color-button-hover: #95E1D3;    /* Light teal for hover */
-  
+  --color-primary-bg: #FFD700;
+  /* Bright yellow background */
+  --color-primary-text: #2C3E50;
+  /* Dark blue-gray text */
+  --color-card-bg: #FFFFFF;
+  /* White card background */
+  --color-card-text: #1A1A1A;
+  /* Near-black for high contrast */
+  --color-button-prev: #FF6B6B;
+  /* Bright red for previous */
+  --color-button-next: #4ECDC4;
+  /* Bright teal for next */
+  --color-button-hover: #95E1D3;
+  /* Light teal for hover */
+
   /* Sizes */
   --min-touch-target: 44px;
   --button-size: 60px;
   --border-radius: 20px;
   --transition-speed: 300ms;
-  
+
   /* Font Sizes - Responsive with clamp() */
   --font-size-arabic: clamp(120px, 20vw, 240px);
   --font-size-name: clamp(24px, 4vw, 36px);
@@ -59,7 +68,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 100px); /* Leave space for navigation */
+  min-height: calc(100vh - 100px);
+  /* Leave space for navigation */
   padding: 20px;
 }
 
@@ -73,10 +83,10 @@ body {
   min-width: 280px;
   max-width: 600px;
   width: 90vw;
-  
+
   /* Smooth transition properties for animations */
   transition: transform var(--transition-speed) ease-in-out,
-              opacity var(--transition-speed) ease-in-out;
+    opacity var(--transition-speed) ease-in-out;
 }
 
 /* Arabic letter - large, responsive font size */
@@ -87,7 +97,7 @@ body {
   line-height: 1.2;
   font-family: 'Traditional Arabic', 'Arabic Typesetting', Tahoma, Arial, sans-serif;
   margin-bottom: 20px;
-  
+
   /* High contrast for visibility */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -99,6 +109,76 @@ body {
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: capitalize;
+}
+
+/* Sound replay button */
+.sound-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  width: 56px;
+  height: 56px;
+  min-width: var(--min-touch-target);
+  min-height: var(--min-touch-target);
+  font-size: 28px;
+  background-color: #FFF8E1;
+  border: 2px solid #FFD700;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform var(--transition-speed) ease,
+    background-color var(--transition-speed) ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sound-button:hover {
+  background-color: #FFD700;
+  transform: scale(1.1);
+}
+
+.sound-button:active {
+  transform: scale(0.92);
+}
+
+/* Error flash — red outline when audio fails */
+.sound-button.sound-error {
+  border-color: #FF6B6B;
+  background-color: #FFE5E5;
+}
+
+/* ===========================
+   Example Word
+   =========================== */
+
+.letter-example {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.letter-example-word {
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 700;
+  color: #5C3D2E;
+  line-height: 1.2;
+}
+
+.letter-example-meaning {
+  font-size: clamp(13px, 2vw, 17px);
+  color: #7B6B63;
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .letter-example-word {
+    color: #D4A574;
+  }
+
+  .letter-example-meaning {
+    color: #A89080;
+  }
 }
 
 /* Animation classes for transitions */
@@ -133,6 +213,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -143,6 +224,7 @@ body {
     transform: translateX(-100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -154,9 +236,129 @@ body {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+
+/* ===========================
+   Progress Indicator
+   =========================== */
+
+.progress-indicator {
+  text-align: center;
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--color-primary-text);
+  font-weight: 600;
+  padding: 8px 0;
+  position: fixed;
+  bottom: 100px;
+  left: 0;
+  right: 0;
+  z-index: 5;
+}
+
+.progress-current {
+  color: var(--color-button-next);
+  font-weight: 700;
+}
+
+
+/* ===========================
+   Swipe Discovery Hint
+   =========================== */
+
+.swipe-hint {
+  position: fixed;
+  bottom: 155px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 20;
+}
+
+.swipe-hint--visible {
+  opacity: 1;
+  animation: swipeHintFade 3s ease forwards;
+}
+
+.swipe-hint-arrow {
+  font-size: clamp(28px, 5vw, 42px);
+  color: #2C3E50;
+  animation: swipeArrowPulse 1s ease-in-out infinite alternate;
+}
+
+.swipe-hint-left {
+  animation-delay: 0s;
+}
+
+.swipe-hint-right {
+  animation-delay: 0.3s;
+}
+
+.swipe-hint-text {
+  font-size: clamp(14px, 2.5vw, 18px);
+  font-weight: 600;
+  color: #2C3E50;
+  white-space: nowrap;
+}
+
+@keyframes swipeArrowPulse {
+  from {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+}
+
+.swipe-hint-left {
+  animation-name: swipeArrowPulseLeft;
+}
+
+@keyframes swipeArrowPulseLeft {
+  from {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: translateX(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes swipeHintFade {
+  0% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  .swipe-hint-arrow,
+  .swipe-hint-text {
+    color: #E0E0E0;
   }
 }
 
@@ -185,30 +387,30 @@ body {
   height: var(--button-size);
   min-width: var(--min-touch-target);
   min-height: var(--min-touch-target);
-  
+
   /* Rounded shape */
   border-radius: 50%;
   border: none;
-  
+
   /* Typography */
   font-size: 28px;
   font-weight: bold;
   color: white;
-  
+
   /* Layout */
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   /* Visual effects */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  
+
   /* Smooth transitions */
   transition: transform var(--transition-speed) ease,
-              box-shadow var(--transition-speed) ease,
-              background-color var(--transition-speed) ease;
-  
+    box-shadow var(--transition-speed) ease,
+    background-color var(--transition-speed) ease;
+
   /* Remove default button styles */
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -265,18 +467,18 @@ body {
     --font-size-arabic: clamp(100px, 18vw, 180px);
     --font-size-name: clamp(20px, 3.5vw, 28px);
   }
-  
+
   .letter-card {
     padding: clamp(20px, 5vw, 40px);
     min-width: 240px;
     width: 85vw;
   }
-  
+
   .display-area {
     padding: 15px;
     min-height: calc(100vh - 90px);
   }
-  
+
   .navigation {
     gap: clamp(20px, 8vw, 40px);
     bottom: 15px;
@@ -292,17 +494,17 @@ body {
     --font-size-arabic: clamp(160px, 16vw, 220px);
     --font-size-name: clamp(28px, 3.5vw, 36px);
   }
-  
+
   .letter-card {
     padding: clamp(40px, 6vw, 60px);
     min-width: 400px;
     width: 70vw;
   }
-  
+
   .display-area {
     padding: 30px;
   }
-  
+
   .navigation {
     gap: clamp(40px, 10vw, 60px);
     bottom: 20px;
@@ -315,7 +517,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
   }
-  
+
   .letter-card {
     max-width: 600px;
   }
@@ -354,4 +556,46 @@ body {
   -ms-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ===========================
+   Dark Mode
+   =========================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary-bg: #1A1A2E;
+    /* Deep navy background */
+    --color-primary-text: #E0E0E0;
+    /* Light gray text */
+    --color-card-bg: #16213E;
+    /* Dark blue card */
+    --color-card-text: #F5F5F5;
+    /* Near-white letter */
+    --color-button-prev: #C0392B;
+    /* Deep red */
+    --color-button-next: #1A8C84;
+    /* Deep teal */
+    --color-button-hover: #148F85;
+    /* Slightly lighter teal */
+  }
+
+  .letter-card {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  }
+
+  .sound-button {
+    background-color: #2A2A4A;
+    border-color: #4ECDC4;
+    color: #E0E0E0;
+  }
+
+  .sound-button:hover {
+    background-color: #1A8C84;
+  }
+
+  .progress-indicator {
+    color: var(--color-primary-text);
+  }
 }

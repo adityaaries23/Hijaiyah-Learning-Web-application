@@ -1,21 +1,45 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Interactive Hijaiyah learning application for young children">
   <title>Hijaiyah Learning</title>
   <link rel="stylesheet" href="styles/main.css">
+
+  <!-- PWA Metadata -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FFD700">
 </head>
+
 <body>
   <main class="app-container">
     <div class="display-area" role="region" aria-label="Letter display">
       <div class="letter-card" aria-live="polite" aria-atomic="true">
-        <div class="letter-arabic">ا</div>
+        <div class="letter-arabic" lang="ar" dir="rtl">ا</div>
         <div class="letter-name">Alif</div>
+        <div class="letter-example">
+          <span class="letter-example-word" lang="ar" dir="rtl">أسد</span>
+          <span class="letter-example-meaning">Lion 🦁</span>
+        </div>
+        <button class="sound-button" aria-label="Play letter sound">🔊</button>
       </div>
     </div>
-    
+
+    <!-- Swipe discovery hint: shown only on first visit, fades after 3s -->
+    <div class="swipe-hint" id="swipe-hint" aria-hidden="true">
+      <span class="swipe-hint-arrow swipe-hint-left">&#8592;</span>
+      <span class="swipe-hint-text">Swipe to navigate</span>
+      <span class="swipe-hint-arrow swipe-hint-right">&#8594;</span>
+    </div>
+
+    <div class="progress-indicator" aria-label="Letter progress">
+      <span class="progress-current">1</span>
+      <span class="progress-separator"> / </span>
+      <span class="progress-total">28</span>
+    </div>
+
     <nav class="navigation" role="navigation" aria-label="Letter navigation">
       <button class="nav-button prev-button" aria-label="Previous letter">◀</button>
       <button class="nav-button next-button" aria-label="Next letter">▶</button>
@@ -25,23 +49,45 @@
   <script src="scripts/data.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/ui.js"></script>
-  
+
   <script>
     // Application initialization
     // Validates: Requirements 9.1, 9.2
     document.addEventListener('DOMContentLoaded', () => {
       // Instantiate HijaiyahApp with HIJAIYAH_LETTERS data
       const app = new HijaiyahApp(HIJAIYAH_LETTERS);
-      
+
       // Instantiate UIManager with app instance
       const uiManager = new UIManager(app);
-      
+
       // Initialize UI to display first letter
       uiManager.init();
-      
+
       // Set up event listeners for navigation and gestures
       uiManager.setupEventListeners();
+
+      // Show swipe hint on first visit only
+      if (!localStorage.getItem('hijaiyah_visited')) {
+        const hint = document.getElementById('swipe-hint');
+        if (hint) {
+          hint.classList.add('swipe-hint--visible');
+          setTimeout(() => {
+            hint.classList.remove('swipe-hint--visible');
+          }, 3000);
+          localStorage.setItem('hijaiyah_visited', '1');
+        }
+      }
+
+      // Register Service Worker for PWA / offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => console.log('ServiceWorker registered with scope:', reg.scope))
+            .catch(err => console.log('ServiceWorker registration failed:', err));
+        });
+      }
     });
   </script>
 </body>
+
 </html>

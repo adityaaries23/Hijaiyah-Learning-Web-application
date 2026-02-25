@@ -1,0 +1,16 @@
+{
+    "name": "Hijaiyah Learning Web",
+    "short_name": "Hijaiyah",
+    "description": "Learn Arabic alphabet letters with pronunciation and examples.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#FFD700",
+    "theme_color": "#FFD700",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "16x16 32x32 48x48",
+            "type": "image/x-icon"
+        }
+    ]
+}

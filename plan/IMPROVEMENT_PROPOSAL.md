@@ -15,17 +15,18 @@ The app is a zero-dependency, offline-first SPA that teaches young children (2+)
 
 ## 🔴 High Priority
 
-### 1. Audio Pronunciation
+### 1. Audio Pronunciation ✅ Done (code complete — audio files pending)
 The app shows each letter visually, but **there is no sound**. For 2-year-olds, hearing the correct pronunciation is the most important learning feature.
 
-**Proposed changes:**
-- Add an `audio/` folder with 28 short MP3/OGG pronunciation clips (e.g., `alif.mp3`, `ba.mp3`, …)
-- Extend `data.js` with an `audio` field per letter object:
-  ```js
-  { id: 1, arabic: 'ا', name: 'Alif', audio: 'audio/alif.mp3' }
-  ```
-- Auto-play audio on navigation; add a speaker button for manual replay
-- Audio files must be bundled locally to preserve offline-first functionality
+**Implemented:**
+- All 28 letters in `data.js` now have an `audio: 'audio/[name].mp3'` field
+- `UIManager.playAudio()` method added — auto-plays on navigation, also wired to a 🔊 replay button
+- 🔊 speaker button added to `index.html` inside `.letter-card` with hover/active/error styles in `main.css`
+- Red flash fallback via `onerror` handler if audio fails to load
+- `tests/data.test.js` — 2 new tests verify all 28 letters have correct `audio/*.mp3` paths
+- All 58 tests pass ✅
+
+> ⚠️ **Pending:** Place the 28 MP3 files into `audio/` folder at the project root. Files expected: `alif.mp3`, `ba.mp3`, `ta.mp3`, `tsa.mp3`, `jim.mp3`, `ha.mp3`, `kha.mp3`, `dal.mp3`, `dzal.mp3`, `ra.mp3`, `zay.mp3`, `sin.mp3`, `syin.mp3`, `shad.mp3`, `dhad.mp3`, `tha.mp3`, `zha.mp3`, `ain.mp3`, `ghain.mp3`, `fa.mp3`, `qaf.mp3`, `kaf.mp3`, `lam.mp3`, `mim.mp3`, `nun.mp3`, `waw.mp3`, `ha2.mp3`, `ya.mp3`
 
 ---
 
@@ -115,7 +116,7 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 
 | # | Improvement | Status | Priority | Impact |
 |---|-------------|--------|----------|--------|
-| 1 | Audio pronunciation | ⬜ Todo | 🔴 High | ⭐⭐⭐⭐⭐ |
+| 1 | Audio pronunciation | ✅ Done (files pending) | 🔴 High | ⭐⭐⭐⭐⭐ |
 | 2 | Progress indicator | ✅ Done | 🔴 High | ⭐⭐⭐⭐ |
 | 3 | Sync-check script | ✅ Done (PR #1) | 🔴 High | ⭐⭐⭐⭐ |
 | 4 | Visual design upgrade | ⬜ Todo | 🟡 Medium | ⭐⭐⭐⭐ |
@@ -141,4 +142,5 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 
 | Branch | PR | Description |
 |--------|----|-------------|
-| `est` | [PR #1](https://github.com/adityaaries23/Hijaiyah-Learning-Web-application/pull/1) | `sync-check.js` + `.gitignore` update, and progress indicator added |
+| `est` | [PR #1](https://github.com/adityaaries23/Hijaiyah-Learning-Web-application/pull/1) | `sync-check.js` + `.gitignore` update |
+| `est` | (open) | Progress indicator, audio pronunciation code, `lang`/`dir` fix, data tests |

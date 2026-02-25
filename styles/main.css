@@ -233,6 +233,102 @@ body {
 
 
 /* ===========================
+   Swipe Discovery Hint
+   =========================== */
+
+.swipe-hint {
+  position: fixed;
+  bottom: 155px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 20;
+}
+
+.swipe-hint--visible {
+  opacity: 1;
+  animation: swipeHintFade 3s ease forwards;
+}
+
+.swipe-hint-arrow {
+  font-size: clamp(28px, 5vw, 42px);
+  color: #2C3E50;
+  animation: swipeArrowPulse 1s ease-in-out infinite alternate;
+}
+
+.swipe-hint-left {
+  animation-delay: 0s;
+}
+
+.swipe-hint-right {
+  animation-delay: 0.3s;
+}
+
+.swipe-hint-text {
+  font-size: clamp(14px, 2.5vw, 18px);
+  font-weight: 600;
+  color: #2C3E50;
+  white-space: nowrap;
+}
+
+@keyframes swipeArrowPulse {
+  from {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+}
+
+.swipe-hint-left {
+  animation-name: swipeArrowPulseLeft;
+}
+
+@keyframes swipeArrowPulseLeft {
+  from {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: translateX(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes swipeHintFade {
+  0% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+
+  .swipe-hint-arrow,
+  .swipe-hint-text {
+    color: #E0E0E0;
+  }
+}
+
+
+/* ===========================
    Navigation Buttons
    =========================== */
 

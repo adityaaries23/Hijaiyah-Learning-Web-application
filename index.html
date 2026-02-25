@@ -19,6 +19,13 @@
       </div>
     </div>
 
+    <!-- Swipe discovery hint: shown only on first visit, fades after 3s -->
+    <div class="swipe-hint" id="swipe-hint" aria-hidden="true">
+      <span class="swipe-hint-arrow swipe-hint-left">&#8592;</span>
+      <span class="swipe-hint-text">Swipe to navigate</span>
+      <span class="swipe-hint-arrow swipe-hint-right">&#8594;</span>
+    </div>
+
     <div class="progress-indicator" aria-label="Letter progress">
       <span class="progress-current">1</span>
       <span class="progress-separator"> / </span>
@@ -50,6 +57,18 @@
 
       // Set up event listeners for navigation and gestures
       uiManager.setupEventListeners();
+
+      // Show swipe hint on first visit only
+      if (!localStorage.getItem('hijaiyah_visited')) {
+        const hint = document.getElementById('swipe-hint');
+        if (hint) {
+          hint.classList.add('swipe-hint--visible');
+          setTimeout(() => {
+            hint.classList.remove('swipe-hint--visible');
+          }, 3000);
+          localStorage.setItem('hijaiyah_visited', '1');
+        }
+      }
     });
   </script>
 </body>

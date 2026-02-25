@@ -125,13 +125,13 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 | 7 | Service Worker / PWA | ⬜ Todo | 🟡 Medium | ⭐⭐⭐ |
 | 8 | Example words | ✅ Done | 🟢 Low | ⭐⭐⭐ |
 | 9 | Dark mode | ✅ Done | 🟢 Low | ⭐⭐ |
-| 10 | Test improvements | ⬜ Todo | 🟢 Low | ⭐⭐⭐ |
+| 10 | Test improvements | ✅ Done | 🟢 Low | ⭐⭐⭐ |
 
 ---
 
 ## Quick Wins
 
-1. Fix `offline.test.js` not in `test:all`
+1. ~~Fix `offline.test.js` not in `test:all`~~ ✅ Done
 2. ~~Add progress indicator — ~20 lines of code~~ ✅ Done
 3. ~~Add keyboard navigation — ~10 lines in `ui.js`~~ ✅ Done
 4. ~~Fix `index.html` `lang="ar" dir="rtl"`~~ ✅ Done

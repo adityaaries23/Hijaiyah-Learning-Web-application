@@ -139,14 +139,15 @@ npm install
 
 **Run all tests**:
 ```bash
-npm test:all
+npm run test:all
 ```
 
 **Run specific test suites**:
 ```bash
 npm test              # Data integrity tests
-npm test:unit         # Unit tests
-npm test:property     # Property-based tests
+npm run test:unit     # Unit tests
+npm run test:property # Property-based tests
+npm run test:offline  # Offline mode tests
 ```
 
 ### Testing Offline Functionality

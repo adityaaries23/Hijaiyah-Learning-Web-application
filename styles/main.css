@@ -5,7 +5,9 @@
    =========================== */
 
 /* CSS Reset for consistent cross-browser rendering */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -14,20 +16,27 @@
 /* CSS Custom Properties for colors and sizes */
 :root {
   /* Primary Colors - Bright and engaging for children */
-  --color-primary-bg: #FFD700;      /* Bright yellow background */
-  --color-primary-text: #2C3E50;    /* Dark blue-gray text */
-  --color-card-bg: #FFFFFF;         /* White card background */
-  --color-card-text: #1A1A1A;       /* Near-black for high contrast */
-  --color-button-prev: #FF6B6B;     /* Bright red for previous */
-  --color-button-next: #4ECDC4;     /* Bright teal for next */
-  --color-button-hover: #95E1D3;    /* Light teal for hover */
-  
+  --color-primary-bg: #FFD700;
+  /* Bright yellow background */
+  --color-primary-text: #2C3E50;
+  /* Dark blue-gray text */
+  --color-card-bg: #FFFFFF;
+  /* White card background */
+  --color-card-text: #1A1A1A;
+  /* Near-black for high contrast */
+  --color-button-prev: #FF6B6B;
+  /* Bright red for previous */
+  --color-button-next: #4ECDC4;
+  /* Bright teal for next */
+  --color-button-hover: #95E1D3;
+  /* Light teal for hover */
+
   /* Sizes */
   --min-touch-target: 44px;
   --button-size: 60px;
   --border-radius: 20px;
   --transition-speed: 300ms;
-  
+
   /* Font Sizes - Responsive with clamp() */
   --font-size-arabic: clamp(120px, 20vw, 240px);
   --font-size-name: clamp(24px, 4vw, 36px);
@@ -59,7 +68,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 100px); /* Leave space for navigation */
+  min-height: calc(100vh - 100px);
+  /* Leave space for navigation */
   padding: 20px;
 }
 
@@ -73,10 +83,10 @@ body {
   min-width: 280px;
   max-width: 600px;
   width: 90vw;
-  
+
   /* Smooth transition properties for animations */
   transition: transform var(--transition-speed) ease-in-out,
-              opacity var(--transition-speed) ease-in-out;
+    opacity var(--transition-speed) ease-in-out;
 }
 
 /* Arabic letter - large, responsive font size */
@@ -87,7 +97,7 @@ body {
   line-height: 1.2;
   font-family: 'Traditional Arabic', 'Arabic Typesetting', Tahoma, Arial, sans-serif;
   margin-bottom: 20px;
-  
+
   /* High contrast for visibility */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -99,6 +109,41 @@ body {
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: capitalize;
+}
+
+/* Sound replay button */
+.sound-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  width: 56px;
+  height: 56px;
+  min-width: var(--min-touch-target);
+  min-height: var(--min-touch-target);
+  font-size: 28px;
+  background-color: #FFF8E1;
+  border: 2px solid #FFD700;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform var(--transition-speed) ease,
+    background-color var(--transition-speed) ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sound-button:hover {
+  background-color: #FFD700;
+  transform: scale(1.1);
+}
+
+.sound-button:active {
+  transform: scale(0.92);
+}
+
+/* Error flash — red outline when audio fails */
+.sound-button.sound-error {
+  border-color: #FF6B6B;
+  background-color: #FFE5E5;
 }
 
 /* Animation classes for transitions */
@@ -133,6 +178,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -143,6 +189,7 @@ body {
     transform: translateX(-100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -154,6 +201,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -208,30 +256,30 @@ body {
   height: var(--button-size);
   min-width: var(--min-touch-target);
   min-height: var(--min-touch-target);
-  
+
   /* Rounded shape */
   border-radius: 50%;
   border: none;
-  
+
   /* Typography */
   font-size: 28px;
   font-weight: bold;
   color: white;
-  
+
   /* Layout */
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   /* Visual effects */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  
+
   /* Smooth transitions */
   transition: transform var(--transition-speed) ease,
-              box-shadow var(--transition-speed) ease,
-              background-color var(--transition-speed) ease;
-  
+    box-shadow var(--transition-speed) ease,
+    background-color var(--transition-speed) ease;
+
   /* Remove default button styles */
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -288,18 +336,18 @@ body {
     --font-size-arabic: clamp(100px, 18vw, 180px);
     --font-size-name: clamp(20px, 3.5vw, 28px);
   }
-  
+
   .letter-card {
     padding: clamp(20px, 5vw, 40px);
     min-width: 240px;
     width: 85vw;
   }
-  
+
   .display-area {
     padding: 15px;
     min-height: calc(100vh - 90px);
   }
-  
+
   .navigation {
     gap: clamp(20px, 8vw, 40px);
     bottom: 15px;
@@ -315,17 +363,17 @@ body {
     --font-size-arabic: clamp(160px, 16vw, 220px);
     --font-size-name: clamp(28px, 3.5vw, 36px);
   }
-  
+
   .letter-card {
     padding: clamp(40px, 6vw, 60px);
     min-width: 400px;
     width: 70vw;
   }
-  
+
   .display-area {
     padding: 30px;
   }
-  
+
   .navigation {
     gap: clamp(40px, 10vw, 60px);
     bottom: 20px;
@@ -338,7 +386,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
   }
-  
+
   .letter-card {
     max-width: 600px;
   }

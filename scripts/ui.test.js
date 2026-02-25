@@ -26,12 +26,22 @@ class UIManager {
     this.nextButton = document.querySelector('.next-button');
     this.progressCurrent = document.querySelector('.progress-current');
     this.progressTotal = document.querySelector('.progress-total');
+    this.soundButton = document.querySelector('.sound-button');
 
     // Validate that all required DOM elements exist
     if (!this.displayArea || !this.letterCard || !this.letterArabic ||
       !this.letterName || !this.prevButton || !this.nextButton) {
       throw new Error('Required DOM elements not found');
     }
+
+    // Audio player instance for letter pronunciation
+    this.audio = new Audio();
+    this.audio.onerror = () => {
+      if (this.soundButton) {
+        this.soundButton.classList.add('sound-error');
+        setTimeout(() => this.soundButton.classList.remove('sound-error'), 600);
+      }
+    };
 
     // Touch/swipe tracking properties
     this.touchStartX = 0;
@@ -59,6 +69,14 @@ class UIManager {
     // Add click event listeners to navigation buttons
     this.nextButton.addEventListener('click', () => this.handleNextClick());
     this.prevButton.addEventListener('click', () => this.handlePreviousClick());
+
+    // Sound button — replay audio for current letter
+    if (this.soundButton) {
+      this.soundButton.addEventListener('click', () => {
+        const letter = this.app.getCurrentLetter();
+        if (letter && letter.audio) this.playAudio(letter.audio);
+      });
+    }
 
     // Add touch event listeners for swipe gestures
     this.displayArea.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
@@ -260,6 +278,18 @@ class UIManager {
   }
 
   /**
+   * Play pronunciation audio for a letter
+   * @param {string} src - Audio file path
+   */
+  playAudio(src) {
+    if (!src) return;
+    this.audio.src = src;
+    this.audio.play().catch(() => {
+      // Autoplay may be blocked until user interacts — silent fail
+    });
+  }
+
+  /**
    * Update the progress indicator
    */
   updateProgress() {
@@ -284,7 +314,11 @@ class UIManager {
 
     // Update progress indicator
     this.updateProgress();
+
+    // Play pronunciation audio
+    if (letter.audio) this.playAudio(letter.audio);
   }
 }
 
 export { UIManager };
+

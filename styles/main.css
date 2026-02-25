@@ -16,8 +16,9 @@
 /* CSS Custom Properties for colors and sizes */
 :root {
   /* Primary Colors - Bright and engaging for children */
-  --color-primary-bg: #FFD700;
-  /* Bright yellow background */
+  --theme-hue: 45;
+  --color-primary-bg: hsl(var(--theme-hue), 80%, 90%);
+  --color-primary-bg-darker: hsl(calc(var(--theme-hue) + 20), 70%, 85%);
   --color-primary-text: #2C3E50;
   /* Dark blue-gray text */
   --color-card-bg: #FFFFFF;
@@ -49,8 +50,10 @@ html {
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-family: 'Nunito', 'Segoe UI', Tahoma, Arial, sans-serif;
+  background: radial-gradient(circle at 50% 30%, var(--color-primary-bg), var(--color-primary-bg-darker));
   background-color: var(--color-primary-bg);
+  background-attachment: fixed;
   color: var(--color-primary-text);
   min-height: 100vh;
   overflow: hidden;
@@ -99,7 +102,61 @@ body {
   margin-bottom: 20px;
 
   /* High contrast for visibility */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+}
+
+/* Animations for Visual Modernization */
+@keyframes arabicPop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  80% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pop {
+  animation: arabicPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Confetti and Stars Animation */
+@keyframes fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
+  position: fixed;
+  top: -10vh;
+  z-index: 100;
+  pointer-events: none;
+  animation: fall var(--fall-duration, 3s) linear forwards;
+}
+
+.star-piece {
+  background: #FFD700;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 
 /* Letter name - smaller, readable font */
@@ -565,8 +622,8 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-primary-bg: #1A1A2E;
-    /* Deep navy background */
+    --color-primary-bg: hsl(var(--theme-hue, 230), 40%, 18%);
+    --color-primary-bg-darker: hsl(calc(var(--theme-hue, 230) + 20), 45%, 12%);
     --color-primary-text: #E0E0E0;
     /* Light gray text */
     --color-card-bg: #16213E;

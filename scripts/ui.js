@@ -37,7 +37,7 @@ class UIManager {
     }
 
     // Audio player instance for letter pronunciation
-    this.audio = new Audio();
+    this.audio = (typeof window !== 'undefined' && window.Audio) ? new window.Audio() : { play: () => Promise.resolve(), src: '' };
     this.audio.onerror = () => {
       if (this.soundButton) {
         this.soundButton.classList.add('sound-error');
@@ -291,10 +291,21 @@ class UIManager {
    */
   playAudio(src) {
     if (!src) return;
+
+    // Skip actual playback in JSDOM test environments to avoid "Not implemented" errors
+    if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('jsdom')) {
+      return;
+    }
+
     this.audio.src = src;
-    this.audio.play().catch(() => {
-      // Autoplay may be blocked until user interacts — silent fail
-    });
+    try {
+      const playPromise = this.audio.play();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(() => { });
+      }
+    } catch (e) {
+      // Catch synchronous errors (e.g., JSDOM Not implemented)
+    }
   }
 
   /**
@@ -320,6 +331,16 @@ class UIManager {
     this.letterArabic.textContent = letter.arabic;
     this.letterName.textContent = letter.name;
 
+    // Trigger bounce animation
+    this.letterArabic.classList.remove('animate-pop');
+    void this.letterArabic.offsetWidth; // trigger reflow
+    this.letterArabic.classList.add('animate-pop');
+
+    // Update dynamic background hue
+    const currentIndex = this.app.getCurrentIndex();
+    const hue = (currentIndex * (360 / 28)) % 360;
+    document.body.style.setProperty('--theme-hue', hue);
+
     // Update example word
     if (this.exampleWord && this.exampleMeaning && letter.example) {
       this.exampleWord.textContent = letter.example.word;
@@ -331,6 +352,38 @@ class UIManager {
 
     // Play pronunciation audio
     if (letter.audio) this.playAudio(letter.audio);
+
+    // Trigger confetti on the last letter
+    if (this.app.getCurrentIndex() === 27) {
+      this.showConfetti();
+    }
+  }
+
+  /**
+   * Show confetti animation
+   */
+  showConfetti() {
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti-piece star-piece';
+      const isStar = Math.random() > 0.5;
+      if (!isStar) {
+        confetti.classList.remove('star-piece');
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        confetti.style.width = '10px';
+        confetti.style.height = '20px';
+      } else {
+        confetti.style.width = '20px';
+        confetti.style.height = '20px';
+      }
+      confetti.style.left = `${Math.random() * 100}vw`;
+      confetti.style.setProperty('--fall-duration', `${Math.random() * 2 + 2}s`);
+      document.body.appendChild(confetti);
+
+      setTimeout(() => {
+        confetti.remove();
+      }, 5000);
+    }
   }
 }
 

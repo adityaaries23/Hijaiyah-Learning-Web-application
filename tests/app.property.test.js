@@ -47,10 +47,14 @@ function setupDOM() {
     </body>
     </html>
   `);
-  
+
   global.document = dom.window.document;
   global.window = dom.window;
-  
+
+  if (dom.window.HTMLMediaElement) {
+    dom.window.HTMLMediaElement.prototype.play = () => Promise.resolve();
+  }
+
   return dom;
 }
 
@@ -66,19 +70,19 @@ function calculateContrastRatio(color1, color2) {
     const r = ((rgb >> 16) & 0xff) / 255;
     const g = ((rgb >> 8) & 0xff) / 255;
     const b = (rgb & 0xff) / 255;
-    
-    const [rs, gs, bs] = [r, g, b].map(c => 
+
+    const [rs, gs, bs] = [r, g, b].map(c =>
       c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
     );
-    
+
     return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
   };
-  
+
   const l1 = getLuminance(color1);
   const l2 = getLuminance(color2);
   const lighter = Math.max(l1, l2);
   const darker = Math.min(l1, l2);
-  
+
   return (lighter + 0.05) / (darker + 0.05);
 }
 
@@ -98,28 +102,28 @@ test('Property 1: Arabic Text Rendering - DOM uses text nodes, not images', () =
         const dom = setupDOM();
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
         const ui = new UIManager(app);
-        
+
         // Navigate to the specified letter
         app.goToLetter(letterIndex);
         const letter = app.getCurrentLetter();
         ui.updateDisplay(letter);
-        
+
         // Get the letter display element
         const letterArabic = document.querySelector('.letter-arabic');
-        
+
         // Verify it's a text node, not an image
         assert.ok(letterArabic !== null, 'Letter display element should exist');
         assert.strictEqual(letterArabic.tagName, 'DIV', 'Should be a DIV element');
         assert.ok(!letterArabic.querySelector('img'), 'Should not contain image elements');
         assert.strictEqual(letterArabic.textContent, letter.arabic, 'Should contain Arabic text');
-        
+
         // Verify the text is an Arabic Unicode character
         const arabicUnicodeRange = /[\u0600-\u06FF]/;
         assert.ok(
           arabicUnicodeRange.test(letterArabic.textContent),
           'Text should be Arabic Unicode character'
         );
-        
+
         dom.window.close();
         return true;
       }
@@ -145,12 +149,12 @@ test('Property 2: High Contrast Visibility - contrast ratio >= 4.5:1', () => {
         const appTextColor = '#1A1A1A';
         const appBgColor = '#FFFFFF';
         const appContrastRatio = calculateContrastRatio(appTextColor, appBgColor);
-        
+
         assert.ok(
           appContrastRatio >= 4.5,
           `App contrast ratio ${appContrastRatio.toFixed(2)} should be >= 4.5:1`
         );
-        
+
         return true;
       }
     ),
@@ -174,13 +178,13 @@ test('Property 3: Single Letter Focus - exactly one letter visible', () => {
         const dom = setupDOM();
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
         const ui = new UIManager(app);
-        
+
         // Perform navigation sequence
         for (const index of navigationSequence) {
           app.goToLetter(index);
           ui.updateDisplay(app.getCurrentLetter());
         }
-        
+
         // Verify exactly one letter card is visible
         const letterCards = document.querySelectorAll('.letter-card');
         assert.strictEqual(
@@ -188,7 +192,7 @@ test('Property 3: Single Letter Focus - exactly one letter visible', () => {
           1,
           'Exactly one letter card should exist in the DOM'
         );
-        
+
         // Verify the letter card contains exactly one Arabic letter
         const letterArabic = document.querySelectorAll('.letter-arabic');
         assert.strictEqual(
@@ -196,7 +200,7 @@ test('Property 3: Single Letter Focus - exactly one letter visible', () => {
           1,
           'Exactly one Arabic letter should be displayed'
         );
-        
+
         dom.window.close();
         return true;
       }
@@ -219,24 +223,24 @@ test('Property 4: Touch Target Minimum Size - buttons >= 44x44px', () => {
       fc.integer({ min: 320, max: 1024 }),
       (viewportWidth) => {
         const dom = setupDOM();
-        
+
         // Set viewport width
         dom.window.innerWidth = viewportWidth;
-        
+
         // Get navigation buttons
         const prevButton = document.querySelector('.prev-button');
         const nextButton = document.querySelector('.next-button');
-        
+
         // Get computed styles (using inline styles for testing)
         const prevStyle = window.getComputedStyle(prevButton);
         const nextStyle = window.getComputedStyle(nextButton);
-        
+
         // Parse dimensions
         const prevWidth = parseInt(prevStyle.width);
         const prevHeight = parseInt(prevStyle.height);
         const nextWidth = parseInt(nextStyle.width);
         const nextHeight = parseInt(nextStyle.height);
-        
+
         // Verify minimum touch target size
         assert.ok(
           prevWidth >= 44,
@@ -254,7 +258,7 @@ test('Property 4: Touch Target Minimum Size - buttons >= 44x44px', () => {
           nextHeight >= 44,
           `Next button height ${nextHeight}px should be >= 44px`
         );
-        
+
         dom.window.close();
         return true;
       }
@@ -278,11 +282,11 @@ test('Property 5: Sequential Navigation - next/previous work correctly', () => {
       fc.integer({ min: 0, max: 26 }),
       (startIndex) => {
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
-        
+
         // Navigate to start index
         app.goToLetter(startIndex);
         assert.strictEqual(app.getCurrentIndex(), startIndex);
-        
+
         // Test next navigation
         app.nextLetter();
         assert.strictEqual(
@@ -290,7 +294,7 @@ test('Property 5: Sequential Navigation - next/previous work correctly', () => {
           startIndex + 1,
           `Next from ${startIndex} should go to ${startIndex + 1}`
         );
-        
+
         // Test previous navigation
         app.previousLetter();
         assert.strictEqual(
@@ -298,7 +302,7 @@ test('Property 5: Sequential Navigation - next/previous work correctly', () => {
           startIndex,
           `Previous from ${startIndex + 1} should go back to ${startIndex}`
         );
-        
+
         return true;
       }
     ),
@@ -320,12 +324,12 @@ test('Property 6: Navigation Wrap-Around - boundaries wrap correctly', () => {
       fc.constantFrom('next-from-last', 'previous-from-first'),
       (scenario) => {
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
-        
+
         if (scenario === 'next-from-last') {
           // Test next from last index (27) wraps to 0
           app.goToLetter(27);
           assert.strictEqual(app.getCurrentIndex(), 27);
-          
+
           app.nextLetter();
           assert.strictEqual(
             app.getCurrentIndex(),
@@ -336,7 +340,7 @@ test('Property 6: Navigation Wrap-Around - boundaries wrap correctly', () => {
           // Test previous from first index (0) wraps to 27
           app.goToLetter(0);
           assert.strictEqual(app.getCurrentIndex(), 0);
-          
+
           app.previousLetter();
           assert.strictEqual(
             app.getCurrentIndex(),
@@ -344,7 +348,7 @@ test('Property 6: Navigation Wrap-Around - boundaries wrap correctly', () => {
             'Previous from index 0 should wrap to index 27'
           );
         }
-        
+
         return true;
       }
     ),
@@ -369,33 +373,33 @@ test('Property 7: Interactive Element Event Handling - listeners attached', () =
         const dom = setupDOM();
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
         const ui = new UIManager(app);
-        
+
         // Navigate to start index
         app.goToLetter(startIndex);
-        
+
         // Ensure isTransitioning is false before testing
         app.setTransitioning(false);
-        
+
         // Set up event listeners
         ui.setupEventListeners();
-        
+
         // Get the button
         const button = document.querySelector(`.${buttonType}`);
         assert.ok(button !== null, `${buttonType} should exist`);
-        
+
         // Verify button is interactive
         assert.ok(!button.disabled, 'Button should not be disabled');
         assert.strictEqual(button.tagName, 'BUTTON', 'Should be a button element');
-        
+
         // Verify the button has the correct class for styling
         assert.ok(
           button.classList.contains('nav-button'),
           'Button should have nav-button class'
         );
-        
+
         // Test the navigation logic directly
         const initialIndex = app.getCurrentIndex();
-        
+
         if (buttonType === 'next-button') {
           // Call next navigation directly
           app.nextLetter();
@@ -415,7 +419,7 @@ test('Property 7: Interactive Element Event Handling - listeners attached', () =
             `Previous navigation should go from ${initialIndex} to ${expectedIndex}`
           );
         }
-        
+
         dom.window.close();
         return true;
       }
@@ -442,32 +446,32 @@ test('Property 8: Visual Feedback on Interaction - buttons provide visual feedba
         const dom = setupDOM();
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
         const ui = new UIManager(app);
-        
+
         // Set up event listeners
         ui.setupEventListeners();
-        
+
         // Get the button
         const button = document.querySelector(`.${buttonType}`);
         assert.ok(button !== null, `${buttonType} should exist`);
-        
+
         // Get initial computed style
         const initialStyle = window.getComputedStyle(button);
         const initialWidth = initialStyle.width;
         const initialHeight = initialStyle.height;
-        
+
         // Verify button has CSS classes that provide visual feedback
         // Check that the button has the nav-button class which has :active and :hover states
         assert.ok(
           button.classList.contains('nav-button'),
           'Button should have nav-button class for visual feedback'
         );
-        
+
         // Verify the button element is capable of receiving focus/active states
         assert.ok(
           button.tagName === 'BUTTON',
           'Should be a button element capable of :active/:hover states'
         );
-        
+
         // Simulate interaction by triggering the event
         const event = new dom.window.MouseEvent(eventType, {
           bubbles: true,
@@ -475,13 +479,13 @@ test('Property 8: Visual Feedback on Interaction - buttons provide visual feedba
           view: dom.window
         });
         button.dispatchEvent(event);
-        
+
         // For click events, verify the handler was called by checking state change
         if (eventType === 'click') {
           // The click should have triggered navigation
           // We can verify this by checking if the app state changed
           const currentIndex = app.getCurrentIndex();
-          
+
           // The state should have changed (unless we're at a boundary and wrapped)
           // This confirms the event handler is working
           assert.ok(
@@ -489,7 +493,7 @@ test('Property 8: Visual Feedback on Interaction - buttons provide visual feedba
             'Click event should have been processed'
           );
         }
-        
+
         // Verify CSS provides visual feedback states
         // We check that the CSS has been set up with appropriate classes
         // In a real browser, :active and :hover would apply automatically
@@ -498,7 +502,7 @@ test('Property 8: Visual Feedback on Interaction - buttons provide visual feedba
           button.className.includes('nav-button'),
           'Button should have styling class for visual feedback'
         );
-        
+
         dom.window.close();
         return true;
       }
@@ -526,30 +530,30 @@ test('Property 9: Swipe Gesture Navigation - swipes trigger correct navigation',
         const dom = setupDOM();
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
         const ui = new UIManager(app);
-        
+
         // Navigate to start index
         app.goToLetter(startIndex);
         const initialIndex = app.getCurrentIndex();
-        
+
         // Ensure isTransitioning is false before testing
         app.setTransitioning(false);
-        
+
         // Simulate swipe gesture by setting touch coordinates
         ui.touchStartX = 100;
         ui.touchStartY = 100;
         ui.touchEndX = 100 + deltaX;
         ui.touchEndY = 100 + deltaY;
-        
+
         // Call detectSwipe to process the gesture
         ui.detectSwipe();
-        
+
         const finalIndex = app.getCurrentIndex();
-        
+
         // Determine expected behavior based on swipe deltas
         const isVerticalSwipe = Math.abs(deltaY) > Math.abs(deltaX);
         const isLeftSwipe = deltaX < -50;
         const isRightSwipe = deltaX > 50;
-        
+
         if (isVerticalSwipe) {
           // Vertical swipes should be ignored - index should not change
           assert.strictEqual(
@@ -581,7 +585,7 @@ test('Property 9: Swipe Gesture Navigation - swipes trigger correct navigation',
             `Small swipe (deltaX=${deltaX}) below threshold should be ignored`
           );
         }
-        
+
         dom.window.close();
         return true;
       }
@@ -607,16 +611,16 @@ test('Property 12: Navigation Performance - response time < 300ms', () => {
         const dom = setupDOM();
         const app = new HijaiyahApp(HIJAIYAH_LETTERS);
         const ui = new UIManager(app);
-        
+
         // Navigate to start index
         app.goToLetter(startIndex);
-        
+
         // Ensure isTransitioning is false before testing
         app.setTransitioning(false);
-        
+
         // Record start time
         const startTime = performance.now();
-        
+
         // Perform navigation action based on type
         if (actionType === 'next-button') {
           // Simulate next button click
@@ -643,22 +647,22 @@ test('Property 12: Navigation Performance - response time < 300ms', () => {
           ui.touchEndY = 100;
           ui.detectSwipe();
         }
-        
+
         // Record end time (after display update)
         const endTime = performance.now();
-        
+
         // Calculate response time
         const responseTime = endTime - startTime;
-        
+
         // Verify response time is under 300ms
         assert.ok(
           responseTime < 300,
           `Navigation response time ${responseTime.toFixed(2)}ms should be < 300ms for ${actionType} from index ${startIndex}`
         );
-        
+
         // Verify that navigation actually occurred (except for boundary cases with swipes)
         const finalIndex = app.getCurrentIndex();
-        
+
         if (actionType === 'next-button') {
           const expectedIndex = (startIndex + 1) % 28;
           assert.strictEqual(
@@ -688,7 +692,7 @@ test('Property 12: Navigation Performance - response time < 300ms', () => {
             `Right swipe should navigate from ${startIndex} to ${expectedIndex}`
           );
         }
-        
+
         // Verify the display was updated with the correct letter
         const displayedLetter = document.querySelector('.letter-arabic').textContent;
         const expectedLetter = app.getCurrentLetter().arabic;
@@ -697,7 +701,7 @@ test('Property 12: Navigation Performance - response time < 300ms', () => {
           expectedLetter,
           'Display should show the correct letter after navigation'
         );
-        
+
         dom.window.close();
         return true;
       }

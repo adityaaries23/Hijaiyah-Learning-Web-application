@@ -85,6 +85,12 @@ class UIManager {
     // Add mouse event fallbacks for desktop testing
     this.displayArea.addEventListener('mousedown', (e) => this.handleMouseDown(e));
     this.displayArea.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+
+    // Keyboard navigation — ArrowRight: next, ArrowLeft: previous
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') this.handleNextClick();
+      else if (e.key === 'ArrowLeft') this.handlePreviousClick();
+    });
   }
 
   /**
@@ -321,4 +327,5 @@ class UIManager {
 }
 
 export { UIManager };
+
 

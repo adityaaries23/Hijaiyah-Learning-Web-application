@@ -146,6 +146,41 @@ body {
   background-color: #FFE5E5;
 }
 
+/* ===========================
+   Example Word
+   =========================== */
+
+.letter-example {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.letter-example-word {
+  font-size: clamp(20px, 3.5vw, 28px);
+  font-weight: 700;
+  color: #5C3D2E;
+  line-height: 1.2;
+}
+
+.letter-example-meaning {
+  font-size: clamp(13px, 2vw, 17px);
+  color: #7B6B63;
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .letter-example-word {
+    color: #D4A574;
+  }
+
+  .letter-example-meaning {
+    color: #A89080;
+  }
+}
+
 /* Animation classes for transitions */
 .letter-card.fade-out {
   opacity: 0;

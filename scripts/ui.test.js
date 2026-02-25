@@ -27,6 +27,8 @@ class UIManager {
     this.progressCurrent = document.querySelector('.progress-current');
     this.progressTotal = document.querySelector('.progress-total');
     this.soundButton = document.querySelector('.sound-button');
+    this.exampleWord = document.querySelector('.letter-example-word');
+    this.exampleMeaning = document.querySelector('.letter-example-meaning');
 
     // Validate that all required DOM elements exist
     if (!this.displayArea || !this.letterCard || !this.letterArabic ||
@@ -318,6 +320,12 @@ class UIManager {
     this.letterArabic.textContent = letter.arabic;
     this.letterName.textContent = letter.name;
 
+    // Update example word
+    if (this.exampleWord && this.exampleMeaning && letter.example) {
+      this.exampleWord.textContent = letter.example.word;
+      this.exampleMeaning.textContent = letter.example.meaning;
+    }
+
     // Update progress indicator
     this.updateProgress();
 
@@ -327,5 +335,6 @@ class UIManager {
 }
 
 export { UIManager };
+
 
 

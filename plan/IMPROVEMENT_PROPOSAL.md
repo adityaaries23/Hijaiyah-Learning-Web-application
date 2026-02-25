@@ -142,5 +142,5 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 
 | Branch | PR | Description |
 |--------|----|-------------|
-| `est` | [PR #1](https://github.com/adityaaries23/Hijaiyah-Learning-Web-application/pull/1) | `sync-check.js` + `.gitignore` update |
-| `est` | (open) | Progress indicator, audio prep, keyboard nav, dark mode, swipe hint, examples, PWA, test scripts |
+| `est` | [PR #1](https://github.com/adityaaries23/Hijaiyah-Learning-Web-application/pull/1) | (Merged) `sync-check.js`, progress indicator, audio prep |
+| `est` | [PR #2](https://github.com/adityaaries23/Hijaiyah-Learning-Web-application/pull/2) | (Open) Keyboard nav, PWA/offline, examples, swipe hint, dark mode |

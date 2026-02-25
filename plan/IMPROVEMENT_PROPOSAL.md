@@ -46,15 +46,15 @@ No visual indicator of position (e.g., "Letter 5 of 28").
 
 ## 🟡 Medium Priority
 
-### 4. Visual Design Modernization
+### 4. Visual Design Modernization ✅ Done
 Current design is functional but plain for a children's app.
 
-**Proposed changes:**
-- Warm radial gradient or illustrated background (stars, clouds)
-- Per-letter background color cycling (28 pastel themes)
+**Implemented changes:**
+- Warm radial gradient with dynamic hue per-letter (`styles/main.css`, `scripts/ui.js`)
 - Bounce/pulse entrance animation on the Arabic character
-- Child-friendly Google Font (e.g., `Nunito`, `Baloo 2`)
+- Child-friendly Google Font (`Nunito`)
 - Confetti/star animation when reaching the last letter (Ya)
+- Maintained zero-dependency offline capabilities
 
 ---
 
@@ -119,7 +119,7 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 | 1 | Audio pronunciation | ✅ Done (files pending) | 🔴 High | ⭐⭐⭐⭐⭐ |
 | 2 | Progress indicator | ✅ Done | 🔴 High | ⭐⭐⭐⭐ |
 | 3 | Sync-check script | ✅ Done (PR #1) | 🔴 High | ⭐⭐⭐⭐ |
-| 4 | Visual design upgrade | ⬜ Todo | 🟡 Medium | ⭐⭐⭐⭐ |
+| 4 | Visual design upgrade | ✅ Done | 🟡 Medium | ⭐⭐⭐⭐ |
 | 5 | Swipe discovery hint | ✅ Done | 🟡 Medium | ⭐⭐⭐ |
 | 6 | Keyboard navigation | ✅ Done | 🟡 Medium | ⭐⭐⭐ |
 | 7 | Service Worker / PWA | ✅ Done | 🟡 Medium | ⭐⭐⭐ |

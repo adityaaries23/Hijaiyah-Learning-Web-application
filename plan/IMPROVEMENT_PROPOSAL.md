@@ -58,7 +58,7 @@ Current design is functional but plain for a children's app.
 
 ---
 
-### 5. Swipe Discovery Hint
+### 5. Swipe Discovery Hint ✅ Done
 No visual cue that cards are swipeable — parents can't discover the gesture.
 
 **Proposed changes:**
@@ -67,7 +67,7 @@ No visual cue that cards are swipeable — parents can't discover the gesture.
 
 ---
 
-### 6. Keyboard Navigation
+### 6. Keyboard Navigation ✅ Done
 README mentions "basic" keyboard support but it's not implemented.
 
 **Proposed changes:**
@@ -88,7 +88,7 @@ App is offline-functional but can't be installed on a home screen.
 
 ## 🟢 Low Priority
 
-### 8. Letter Example Words
+### 8. Letter Example Words ✅ Done
 Show an example word per letter (e.g., "أسد" = Lion for Alif).
 
 - Extend `data.js` with an `example` field (word + emoji)
@@ -96,7 +96,7 @@ Show an example word per letter (e.g., "أسد" = Lion for Alif).
 
 ---
 
-### 9. Dark Mode
+### 9. Dark Mode ✅ Done
 For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main.css`.
 
 ---
@@ -120,11 +120,11 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 | 2 | Progress indicator | ✅ Done | 🔴 High | ⭐⭐⭐⭐ |
 | 3 | Sync-check script | ✅ Done (PR #1) | 🔴 High | ⭐⭐⭐⭐ |
 | 4 | Visual design upgrade | ⬜ Todo | 🟡 Medium | ⭐⭐⭐⭐ |
-| 5 | Swipe discovery hint | ⬜ Todo | 🟡 Medium | ⭐⭐⭐ |
-| 6 | Keyboard navigation | ⬜ Todo | 🟡 Medium | ⭐⭐⭐ |
+| 5 | Swipe discovery hint | ✅ Done | 🟡 Medium | ⭐⭐⭐ |
+| 6 | Keyboard navigation | ✅ Done | 🟡 Medium | ⭐⭐⭐ |
 | 7 | Service Worker / PWA | ⬜ Todo | 🟡 Medium | ⭐⭐⭐ |
-| 8 | Example words | ⬜ Todo | 🟢 Low | ⭐⭐⭐ |
-| 9 | Dark mode | ⬜ Todo | 🟢 Low | ⭐⭐ |
+| 8 | Example words | ✅ Done | 🟢 Low | ⭐⭐⭐ |
+| 9 | Dark mode | ✅ Done | 🟢 Low | ⭐⭐ |
 | 10 | Test improvements | ⬜ Todo | 🟢 Low | ⭐⭐⭐ |
 
 ---
@@ -133,7 +133,7 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 
 1. Fix `offline.test.js` not in `test:all`
 2. ~~Add progress indicator — ~20 lines of code~~ ✅ Done
-3. Add keyboard navigation — ~10 lines in `ui.js`
+3. ~~Add keyboard navigation — ~10 lines in `ui.js`~~ ✅ Done
 4. ~~Fix `index.html` `lang="ar" dir="rtl"`~~ ✅ Done
 
 ---
@@ -143,4 +143,4 @@ For low-light/bedtime use — add `@media (prefers-color-scheme: dark)` in `main
 | Branch | PR | Description |
 |--------|----|-------------|
 | `est` | [PR #1](https://github.com/adityaaries23/Hijaiyah-Learning-Web-application/pull/1) | `sync-check.js` + `.gitignore` update |
-| `est` | (open) | Progress indicator, audio pronunciation code, `lang`/`dir` fix, data tests |
+| `est` | (open) | Progress indicator, audio pronunciation code, keyboard nav, dark mode, swipe hint, example words |

@@ -3,70 +3,200 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
   <meta name="description" content="Interactive Hijaiyah learning application for young children">
-  <title>Hijaiyah Learning</title>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Hijaiyah Kids 🌙</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
 
   <!-- PWA Metadata -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#FFD700">
+  <meta name="theme-color" content="#8B5CF6">
 </head>
 
 <body>
-  <main class="app-container">
-    <div class="display-area" role="region" aria-label="Letter display">
-      <div class="letter-card" aria-live="polite" aria-atomic="true">
-        <div class="letter-arabic" lang="ar" dir="rtl">ا</div>
-        <div class="letter-name">Alif</div>
-        <div class="letter-example">
-          <span class="letter-example-word" lang="ar" dir="rtl">أسد</span>
-          <span class="letter-example-meaning">Lion 🦁</span>
-        </div>
-        <button class="sound-button" aria-label="Play letter sound">🔊</button>
+  <!-- ============================================================
+       DESKTOP SIDEBAR (visible only on ≥1280px)
+       Contains: branding, scrollable letter list, progress footer
+  ============================================================ -->
+  <aside class="desktop-sidebar" id="desktop-sidebar" aria-label="Letter navigator">
+    <div class="sidebar-brand">
+      <span class="sidebar-logo" aria-hidden="true">🌙</span>
+      <span class="sidebar-title">Hijaiyah Kids</span>
+    </div>
+
+    <p class="sidebar-section-label">All Letters</p>
+
+    <!-- Scrollable letter list — populated by JS -->
+    <nav class="sidebar-letter-list" id="sidebar-letter-list" role="list" aria-label="Jump to letter"></nav>
+
+    <div class="sidebar-progress-footer">
+      <div class="sidebar-progress-label">
+        Progress: <span class="progress-current-sidebar">1</span> / <span class="progress-total-sidebar">28</span>
+      </div>
+      <div class="sidebar-progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="28" aria-valuenow="1">
+        <div class="sidebar-progress-fill" id="sidebar-progress-fill"></div>
       </div>
     </div>
+  </aside>
 
-    <!-- Swipe discovery hint: shown only on first visit, fades after 3s -->
-    <div class="swipe-hint" id="swipe-hint" aria-hidden="true">
-      <span class="swipe-hint-arrow swipe-hint-left">&#8592;</span>
-      <span class="swipe-hint-text">Swipe to navigate</span>
-      <span class="swipe-hint-arrow swipe-hint-right">&#8594;</span>
+  <!-- ============================================================
+       MAIN APP  (always visible)
+  ============================================================ -->
+  <main class="app-container">
+
+    <!-- ===== APP HEADER ===== -->
+    <header class="app-header">
+      <div class="header-brand">
+        <span class="header-logo" aria-hidden="true">🌙</span>
+        <span class="header-title">Hijaiyah Kids</span>
+      </div>
+      <div class="header-right">
+        <div class="progress-badge" aria-label="Letter progress">
+          <span class="progress-badge-icon" aria-hidden="true">⭐</span>
+          <span class="progress-badge-text">
+            <span class="progress-current" aria-live="polite">1</span>
+            <span class="progress-separator"> / </span>
+            <span class="progress-total">28</span>
+          </span>
+        </div>
+        <!-- icon hidden on desktop (sidebar takes over navigation) -->
+        <button class="settings-btn" id="grid-toggle-btn" aria-label="View all letters">⊞</button>
+      </div>
+    </header>
+
+    <!-- ===== SPLIT BODY (used as flex container on iPad landscape / desktop) ===== -->
+    <div class="app-body">
+
+      <!-- ===== MAIN DISPLAY AREA ===== -->
+      <div class="display-area" role="region" aria-label="Letter display">
+        <div class="letter-card" aria-live="polite" aria-atomic="true">
+
+          <!-- Decorative dots -->
+          <div class="card-dots" aria-hidden="true">
+            <span class="card-dot dot-1"></span>
+            <span class="card-dot dot-2"></span>
+            <span class="card-dot dot-3"></span>
+            <span class="card-dot dot-4"></span>
+            <span class="card-dot dot-5"></span>
+          </div>
+
+          <!-- Arabic letter in circular container -->
+          <div class="letter-circle-container">
+            <div class="letter-arabic" lang="ar" dir="rtl">ا</div>
+          </div>
+
+          <!-- Letter name -->
+          <div class="letter-name">Alif</div>
+
+          <!-- Decorative divider -->
+          <div class="card-divider" aria-hidden="true"></div>
+
+          <!-- Example word -->
+          <div class="letter-example">
+            <span class="letter-example-word" lang="ar" dir="rtl">أسد</span>
+            <span class="letter-example-meaning">Lion 🦁</span>
+          </div>
+
+          <!-- Sound button -->
+          <button class="sound-button" aria-label="Play letter sound">🔊</button>
+        </div>
+
+        <!-- ===== SWIPE HINT (phone only) ===== -->
+        <div class="swipe-hint" id="swipe-hint" aria-hidden="true">
+          <span class="swipe-hint-arrow swipe-hint-left">&#8592;</span>
+          <span class="swipe-hint-text">Swipe to navigate</span>
+          <span class="swipe-hint-arrow swipe-hint-right">&#8594;</span>
+        </div>
+
+        <!-- ===== PROGRESS SECTION ===== -->
+        <div class="progress-section" aria-label="Learning progress">
+          <div class="progress-bar-track" role="progressbar" aria-valuemin="1" aria-valuemax="28" aria-valuenow="1">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          </div>
+          <div class="progress-dots" id="progress-dots" aria-hidden="true">
+            <!-- Dot indicators rendered by JS -->
+          </div>
+        </div>
+
+        <!-- ===== BOTTOM NAVIGATION ===== -->
+        <nav class="navigation" role="navigation" aria-label="Letter navigation">
+          <div class="nav-item">
+            <button class="nav-button prev-button" aria-label="Previous letter">◀</button>
+            <span class="nav-label">Previous</span>
+          </div>
+
+          <!-- "All Letters" button: visible on phone & iPad; hidden on desktop where sidebar takes over -->
+          <div class="nav-item nav-item--center">
+            <button class="nav-button grid-button" id="grid-btn" aria-label="View all letters">☰</button>
+            <span class="nav-label nav-label--accent">All Letters</span>
+          </div>
+
+          <div class="nav-item">
+            <button class="nav-button next-button" aria-label="Next letter">▶</button>
+            <span class="nav-label">Next</span>
+          </div>
+        </nav>
+      </div><!-- /.display-area -->
+
+      <!-- ============================================================
+           INLINE LETTER GRID PANEL
+           Hidden on phone (uses modal instead).
+           Always visible on iPad landscape & desktop.
+      ============================================================ -->
+      <aside class="inline-grid-panel" id="inline-grid-panel" aria-label="All Hijaiyah letters">
+        <h2 class="inline-grid-title">All Letters</h2>
+        <div class="letters-grid inline-grid" id="letters-grid-inline" role="list" aria-label="Hijaiyah alphabet grid">
+          <!-- Cards rendered by JS -->
+        </div>
+      </aside>
+
+    </div><!-- /.app-body -->
+
+  </main><!-- /.app-container -->
+
+  <!-- ============================================================
+       MODAL GRID (phone only — hidden on ≥768px landscape & desktop)
+  ============================================================ -->
+  <div class="grid-modal" id="grid-modal" role="dialog" aria-modal="true" aria-label="All 28 Hijaiyah letters" hidden>
+    <div class="grid-modal-inner">
+      <div class="grid-modal-header">
+        <button class="grid-back-btn" id="grid-close-btn" aria-label="Back to learning">&#8592;</button>
+        <h2 class="grid-modal-title">All Letters</h2>
+        <div class="grid-modal-placeholder" aria-hidden="true"></div>
+      </div>
+      <div class="letters-grid modal-grid" id="letters-grid" role="list" aria-label="Hijaiyah alphabet grid">
+        <!-- Cards rendered by JS -->
+      </div>
     </div>
+  </div>
 
-    <div class="progress-indicator" aria-label="Letter progress">
-      <span class="progress-current">1</span>
-      <span class="progress-separator"> / </span>
-      <span class="progress-total">28</span>
-    </div>
-
-    <nav class="navigation" role="navigation" aria-label="Letter navigation">
-      <button class="nav-button prev-button" aria-label="Previous letter">◀</button>
-      <button class="nav-button next-button" aria-label="Next letter">▶</button>
-    </nav>
-  </main>
+  <!-- ===== DESKTOP KEYBOARD HINT ===== -->
+  <div class="keyboard-hint" id="keyboard-hint" aria-hidden="true">
+    <kbd>←</kbd> <kbd>→</kbd> Arrow keys to navigate
+  </div>
 
   <script src="scripts/data.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/ui.js"></script>
 
   <script>
-    // Application initialization
-    // Validates: Requirements 9.1, 9.2
     document.addEventListener('DOMContentLoaded', () => {
-      // Instantiate HijaiyahApp with HIJAIYAH_LETTERS data
       const app = new HijaiyahApp(HIJAIYAH_LETTERS);
-
-      // Instantiate UIManager with app instance
       const uiManager = new UIManager(app);
 
-      // Initialize UI to display first letter
       uiManager.init();
-
-      // Set up event listeners for navigation and gestures
       uiManager.setupEventListeners();
 
-      // Show swipe hint on first visit only
+      // Show swipe hint on first visit (phone only)
       if (!localStorage.getItem('hijaiyah_visited')) {
         const hint = document.getElementById('swipe-hint');
         if (hint) {
@@ -82,8 +212,8 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => console.log('ServiceWorker registered with scope:', reg.scope))
-            .catch(err => console.log('ServiceWorker registration failed:', err));
+            .then(reg => console.log('ServiceWorker registered:', reg.scope))
+            .catch(err => console.log('ServiceWorker failed:', err));
         });
       }
     });

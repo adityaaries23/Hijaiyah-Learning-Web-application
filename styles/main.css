@@ -1,10 +1,16 @@
-/* Hijaiyah Learning Web - Main Stylesheet */
+/* ============================================================
+   Hijaiyah Kids — Main Stylesheet
+   Design: Purple/lavender palette, playful & kid-friendly
+   ============================================================ */
 
 /* ===========================
-   CSS Reset and Base Styles
+   Google Fonts Fallback
    =========================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* CSS Reset for consistent cross-browser rendering */
+/* ===========================
+   CSS Reset
+   =========================== */
 *,
 *::before,
 *::after {
@@ -13,100 +19,394 @@
   padding: 0;
 }
 
-/* CSS Custom Properties for colors and sizes */
+/* Force light color scheme */
 :root {
-  /* Primary Colors - Bright and engaging for children */
-  --theme-hue: 45;
-  --color-primary-bg: hsl(var(--theme-hue), 80%, 90%);
-  --color-primary-bg-darker: hsl(calc(var(--theme-hue) + 20), 70%, 85%);
-  --color-primary-text: #2C3E50;
-  /* Dark blue-gray text */
-  --color-card-bg: #FFFFFF;
-  /* White card background */
-  --color-card-text: #1A1A1A;
-  /* Near-black for high contrast */
-  --color-button-prev: #FF6B6B;
-  /* Bright red for previous */
-  --color-button-next: #4ECDC4;
-  /* Bright teal for next */
-  --color-button-hover: #95E1D3;
-  /* Light teal for hover */
-
-  /* Sizes */
-  --min-touch-target: 44px;
-  --button-size: 60px;
-  --border-radius: 20px;
-  --transition-speed: 300ms;
-
-  /* Font Sizes - Responsive with clamp() */
-  --font-size-arabic: clamp(120px, 20vw, 240px);
-  --font-size-name: clamp(24px, 4vw, 36px);
+  color-scheme: light;
 }
 
-/* Base HTML and Body Styles */
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color-scheme: light;
+}
+
+/* ===========================
+   Design Tokens
+   =========================== */
+:root {
+  /* Brand Colors */
+  --purple-50: #F5F3FF;
+  --purple-100: #EDE9FE;
+  --purple-200: #DDD6FE;
+  --purple-300: #C4B5FD;
+  --purple-400: #A78BFA;
+  --purple-500: #8B5CF6;
+  --purple-600: #7C3AED;
+  --purple-700: #6D28D9;
+  --purple-800: #5B21B6;
+  --purple-900: #4C1D95;
+  --purple-950: #2D1B69;
+
+  /* Semantic Colors */
+  --color-bg: #F0F4FF;
+  --color-card-bg: #FFFFFF;
+  --color-text-primary: #1E1B4B;
+  --color-text-muted: #7C3AED;
+  --color-text-light: #6B7280;
+
+  --color-prev: #FEE2E2;
+  --color-prev-icon: #EF4444;
+  --color-next: #DCFCE7;
+  --color-next-icon: #22C55E;
+  --color-grid-btn: var(--purple-500);
+  --color-grid-btn-shadow: #8B5CF630;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-display: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+
+  /* Spacing */
+  --header-height: 68px;
+  --nav-height: 90px;
+  --progress-height: 52px;
+
+  /* Transitions */
+  --transition-speed: 300ms;
+  --transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Touch targets */
+  --min-touch: 44px;
+}
+
+/* ===========================
+   Base
+   =========================== */
 html {
   font-size: 16px;
-  -webkit-text-size-adjust: 100%;
+  height: 100%;
+  /* Support for safe area insets (notches) */
+  height: 100dvh; /* Dynamic viewport height */
 }
 
 body {
-  font-family: 'Nunito', 'Segoe UI', Tahoma, Arial, sans-serif;
-  background: radial-gradient(circle at 50% 30%, var(--color-primary-bg), var(--color-primary-bg-darker));
-  background-color: var(--color-primary-bg);
-  background-attachment: fixed;
-  color: var(--color-primary-text);
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
   min-height: 100vh;
+  min-height: 100dvh;
+  height: 100%;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Safe area support for notched devices - only for top */
+  padding: env(safe-area-inset-top) 0 0 0;
+  position: relative;
 }
-
 
 /* ===========================
-   Display Area and Letter Card
+   App Container
    =========================== */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+}
 
-/* Main container - flexbox layout for centering */
+/* Limit width only on larger screens */
+@media (min-width: 481px) {
+  .app-container {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+/* ===========================
+   Header
+   =========================== */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  height: var(--header-height);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo {
+  font-size: 24px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.3));
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--purple-950);
+  letter-spacing: -0.3px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Progress badge in header */
+.progress-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple-100);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+}
+
+.progress-badge-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.progress-badge-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--purple-700);
+}
+
+.progress-current {
+  color: var(--purple-600);
+  font-weight: 700;
+}
+
+.settings-btn {
+  width: 40px;
+  height: 40px;
+  background: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.12);
+  transition: transform var(--transition-speed) var(--transition-ease),
+    box-shadow var(--transition-speed) var(--transition-ease);
+  -webkit-tap-highlight-color: transparent;
+  color: var(--purple-700);
+  font-weight: 700;
+  touch-action: manipulation; /* Prevent double-tap zoom */
+}
+
+.settings-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.2);
+}
+
+.settings-btn:active {
+  transform: scale(0.94);
+}
+
+/* ===========================
+   Display Area
+   =========================== */
 .display-area {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 100px);
-  /* Leave space for navigation */
-  padding: 20px;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
-/* Letter card styling */
+/* ===========================
+   Letter Card
+   =========================== */
 .letter-card {
-  background-color: var(--color-card-bg);
-  border-radius: var(--border-radius);
-  padding: 40px;
+  background: var(--color-card-bg);
+  border-radius: var(--radius-xl);
+  padding: 32px 24px 28px;
   text-align: center;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  min-width: 280px;
-  max-width: 600px;
-  width: 90vw;
+  box-shadow: 0 8px 40px rgba(139, 92, 246, 0.12),
+    0 2px 8px rgba(139, 92, 246, 0.06);
+  width: calc(100% - 40px);
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 1;
+  min-height: 0;
+  margin: auto 20px;
 
-  /* Smooth transition properties for animations */
+  /* Transition for slide animations */
   transition: transform var(--transition-speed) ease-in-out,
     opacity var(--transition-speed) ease-in-out;
+
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
 }
 
-/* Arabic letter - large, responsive font size */
-.letter-arabic {
-  font-size: var(--font-size-arabic);
-  font-weight: bold;
-  color: var(--color-card-text);
-  line-height: 1.2;
-  font-family: 'Traditional Arabic', 'Arabic Typesetting', Tahoma, Arial, sans-serif;
-  margin-bottom: 20px;
+/* Decorative dots */
+.card-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
 
-  /* High contrast for visibility */
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-1 {
+  background: var(--purple-200);
+}
+
+.dot-2 {
+  background: var(--purple-300);
+}
+
+.dot-3 {
+  background: var(--purple-400);
+}
+
+.dot-4 {
+  background: var(--purple-300);
+}
+
+.dot-5 {
+  background: var(--purple-200);
+}
+
+/* Circular letter container */
+.letter-circle-container {
+  width: clamp(140px, 38vw, 185px);
+  height: clamp(140px, 38vw, 185px);
+  background: var(--purple-50);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Arabic letter */
+.letter-arabic {
+  font-size: clamp(72px, 18vw, 110px);
+  font-weight: 700;
+  color: var(--purple-900);
+  line-height: 1;
+  font-family: 'Scheherazade New', 'Arabic Typesetting', 'Traditional Arabic', Georgia, serif;
   display: inline-block;
 }
 
-/* Animations for Visual Modernization */
+/* Letter name */
+.letter-name {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 5.5vw, 30px);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.3px;
+}
+
+/* Divider line */
+.card-divider {
+  width: 60px;
+  height: 3px;
+  background: var(--purple-200);
+  border-radius: var(--radius-full);
+}
+
+/* Example word */
+.letter-example {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.letter-example-word {
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 700;
+  color: var(--purple-800);
+  line-height: 1.2;
+  font-family: 'Scheherazade New', 'Arabic Typesetting', Georgia, serif;
+}
+
+.letter-example-meaning {
+  font-size: clamp(13px, 3vw, 16px);
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--purple-600);
+}
+
+/* Sound button */
+.sound-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  min-width: var(--min-touch);
+  min-height: var(--min-touch);
+  font-size: 24px;
+  background: var(--purple-500);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(139, 92, 246, 0.4);
+  transition: transform var(--transition-speed) var(--transition-ease),
+    box-shadow var(--transition-speed) var(--transition-ease);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; /* Prevent double-tap zoom */
+}
+
+.sound-button:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.5);
+}
+
+.sound-button:active {
+  transform: scale(0.92);
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+}
+
+.sound-button.sound-error {
+  background: #FEE2E2;
+  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.35);
+}
+
+/* ===========================
+   Letter Pop Animation
+   =========================== */
 @keyframes arabicPop {
   0% {
     transform: scale(0.5);
@@ -114,12 +414,12 @@ body {
   }
 
   60% {
-    transform: scale(1.1);
+    transform: scale(1.12);
     opacity: 1;
   }
 
   80% {
-    transform: scale(0.95);
+    transform: scale(0.96);
     opacity: 1;
   }
 
@@ -130,122 +430,16 @@ body {
 }
 
 .animate-pop {
-  animation: arabicPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: arabicPop 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* Confetti and Stars Animation */
-@keyframes fall {
-  0% {
-    transform: translateY(-10vh) rotate(0deg);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(110vh) rotate(720deg);
-    opacity: 0;
-  }
+/* Card slide transitions */
+.letter-card.slide-in-left {
+  animation: slideInLeft var(--transition-speed) ease-in-out;
 }
 
-.confetti-piece {
-  position: fixed;
-  top: -10vh;
-  z-index: 100;
-  pointer-events: none;
-  animation: fall var(--fall-duration, 3s) linear forwards;
-}
-
-.star-piece {
-  background: #FFD700;
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-}
-
-/* Letter name - smaller, readable font */
-.letter-name {
-  font-size: var(--font-size-name);
-  color: var(--color-primary-text);
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: capitalize;
-}
-
-/* Sound replay button */
-.sound-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 16px;
-  width: 56px;
-  height: 56px;
-  min-width: var(--min-touch-target);
-  min-height: var(--min-touch-target);
-  font-size: 28px;
-  background-color: #FFF8E1;
-  border: 2px solid #FFD700;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform var(--transition-speed) ease,
-    background-color var(--transition-speed) ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.sound-button:hover {
-  background-color: #FFD700;
-  transform: scale(1.1);
-}
-
-.sound-button:active {
-  transform: scale(0.92);
-}
-
-/* Error flash — red outline when audio fails */
-.sound-button.sound-error {
-  border-color: #FF6B6B;
-  background-color: #FFE5E5;
-}
-
-/* ===========================
-   Example Word
-   =========================== */
-
-.letter-example {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  margin-top: 8px;
-}
-
-.letter-example-word {
-  font-size: clamp(20px, 3.5vw, 28px);
-  font-weight: 700;
-  color: #5C3D2E;
-  line-height: 1.2;
-}
-
-.letter-example-meaning {
-  font-size: clamp(13px, 2vw, 17px);
-  color: #7B6B63;
-  font-weight: 500;
-}
-
-@media (prefers-color-scheme: dark) {
-  .letter-example-word {
-    color: #D4A574;
-  }
-
-  .letter-example-meaning {
-    color: #A89080;
-  }
-}
-
-/* Animation classes for transitions */
-.letter-card.fade-out {
-  opacity: 0;
-  transition: opacity var(--transition-speed) ease-in-out;
-}
-
-.letter-card.fade-in {
-  animation: fadeIn var(--transition-speed) ease-in-out;
+.letter-card.slide-in-right {
+  animation: slideInRight var(--transition-speed) ease-in-out;
 }
 
 .letter-card.slide-out-left {
@@ -258,12 +452,13 @@ body {
   opacity: 0;
 }
 
-.letter-card.slide-in-left {
-  animation: slideInLeft var(--transition-speed) ease-in-out;
+.letter-card.fade-in {
+  animation: fadeIn var(--transition-speed) ease-in-out;
 }
 
-.letter-card.slide-in-right {
-  animation: slideInRight var(--transition-speed) ease-in-out;
+.letter-card.fade-out {
+  opacity: 0;
+  transition: opacity var(--transition-speed) ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -300,37 +495,96 @@ body {
   }
 }
 
-
 /* ===========================
-   Progress Indicator
+   Confetti / Celebration
    =========================== */
+@keyframes fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
 
-.progress-indicator {
-  text-align: center;
-  font-size: clamp(18px, 3vw, 24px);
-  color: var(--color-primary-text);
-  font-weight: 600;
-  padding: 8px 0;
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
   position: fixed;
-  bottom: 100px;
-  left: 0;
-  right: 0;
-  z-index: 5;
+  top: -10vh;
+  z-index: 200;
+  pointer-events: none;
+  animation: fall var(--fall-duration, 3s) linear forwards;
 }
 
-.progress-current {
-  color: var(--color-button-next);
-  font-weight: 700;
+.star-piece {
+  background: #FFD700;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
-
 
 /* ===========================
-   Swipe Discovery Hint
+   Progress Section
    =========================== */
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px 8px;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 
+/* Progress bar */
+.progress-bar-track {
+  width: 100%;
+  max-width: 100%;
+  height: 8px;
+  background: #E9D5FF;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple-400), var(--purple-600));
+  border-radius: var(--radius-full);
+  transition: width 0.4s var(--transition-ease);
+  width: 3.6%;
+  /* 1/28 */
+}
+
+/* Progress dots */
+.progress-dots {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.progress-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--purple-200);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.progress-dot.active {
+  background: var(--purple-500);
+  transform: scale(1.3);
+}
+
+/* ===========================
+   Swipe Hint
+   =========================== */
 .swipe-hint {
   position: fixed;
-  bottom: 155px;
+  bottom: calc(var(--nav-height) + var(--progress-height) + 12px);
   left: 0;
   right: 0;
   display: flex;
@@ -349,50 +603,47 @@ body {
 }
 
 .swipe-hint-arrow {
-  font-size: clamp(28px, 5vw, 42px);
-  color: #2C3E50;
-  animation: swipeArrowPulse 1s ease-in-out infinite alternate;
+  font-size: clamp(24px, 5vw, 36px);
+  color: var(--purple-700);
 }
 
 .swipe-hint-left {
-  animation-delay: 0s;
+  animation: swipeArrowPulseLeft 1s ease-in-out infinite alternate;
 }
 
 .swipe-hint-right {
+  animation: swipeArrowPulseRight 1s ease-in-out infinite alternate;
   animation-delay: 0.3s;
 }
 
 .swipe-hint-text {
-  font-size: clamp(14px, 2.5vw, 18px);
+  font-size: clamp(13px, 2.5vw, 16px);
   font-weight: 600;
-  color: #2C3E50;
+  font-family: var(--font-body);
+  color: var(--purple-700);
   white-space: nowrap;
-}
-
-@keyframes swipeArrowPulse {
-  from {
-    transform: translateX(0);
-    opacity: 0.6;
-  }
-
-  to {
-    transform: translateX(8px);
-    opacity: 1;
-  }
-}
-
-.swipe-hint-left {
-  animation-name: swipeArrowPulseLeft;
 }
 
 @keyframes swipeArrowPulseLeft {
   from {
     transform: translateX(0);
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   to {
     transform: translateX(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes swipeArrowPulseRight {
+  from {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: translateX(8px);
     opacity: 1;
   }
 }
@@ -411,180 +662,315 @@ body {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-
-  .swipe-hint-arrow,
-  .swipe-hint-text {
-    color: #E0E0E0;
-  }
-}
-
-
 /* ===========================
-   Navigation Buttons
+   Bottom Navigation
    =========================== */
-
-/* Navigation container - positioned at bottom */
 .navigation {
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  right: 0;
   display: flex;
-  justify-content: center;
-  gap: 40px;
-  padding: 0 20px;
+  justify-content: space-around;
+  align-items: center;
+  padding: 16px 20px 28px;
+  height: auto;
+  min-height: var(--nav-height);
+  flex-shrink: 0;
+  /* background: #FFFFFF; */
+  /* box-shadow: 0 -4px 20px rgba(139, 92, 246, 0.08); */
   z-index: 10;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 0;
 }
 
-/* Base button styles - large, rounded, touch-friendly */
-.nav-button {
-  /* Minimum 44x44px touch target, using 60px for better visibility */
-  width: var(--button-size);
-  height: var(--button-size);
-  min-width: var(--min-touch-target);
-  min-height: var(--min-touch-target);
-
-  /* Rounded shape */
-  border-radius: 50%;
-  border: none;
-
-  /* Typography */
-  font-size: 28px;
-  font-weight: bold;
-  color: white;
-
-  /* Layout */
+.nav-item {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 5px;
+  flex: 1;
+}
 
-  /* Visual effects */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.nav-item--center {
+  /* No vertical offset — stay in line with siblings */
+  margin-top: 0;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   cursor: pointer;
-
-  /* Smooth transitions */
-  transition: transform var(--transition-speed) ease,
-    box-shadow var(--transition-speed) ease,
-    background-color var(--transition-speed) ease;
-
-  /* Remove default button styles */
+  -webkit-tap-highlight-color: transparent;
   -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   outline: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: transform var(--transition-speed) var(--transition-ease),
+    box-shadow var(--transition-speed) var(--transition-ease);
+  touch-action: manipulation; /* Prevent double-tap zoom */
 }
 
-/* Previous button - bright red */
-.prev-button {
-  background-color: var(--color-button-prev);
-}
-
-/* Next button - bright teal */
+/* Prev / Next buttons */
+.prev-button,
 .next-button {
-  background-color: var(--color-button-next);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 18px;
 }
 
-/* Hover state - scale up and change shadow */
+.prev-button {
+  background: var(--color-prev);
+  color: var(--color-prev-icon);
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.15);
+}
+
+.next-button {
+  background: var(--color-next);
+  color: var(--color-next-icon);
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.15);
+}
+
+/* Grid / All Letters center button — circle, slightly larger to denote primary action */
+.grid-button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 22px;
+  background: var(--color-grid-btn);
+  color: #FFFFFF;
+  box-shadow: 0 4px 18px var(--color-grid-btn-shadow);
+}
+
+/* Hover & active states */
 .nav-button:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Active state - scale down for press feedback */
 .nav-button:active {
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(0.93);
 }
 
-/* Focus state for accessibility */
-.nav-button:focus {
-  outline: 3px solid var(--color-button-hover);
+.prev-button:hover {
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.28);
+}
+
+.next-button:hover {
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.28);
+}
+
+.grid-button:hover {
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.45);
+}
+
+/* Focus */
+.nav-button:focus-visible {
+  outline: 3px solid var(--purple-400);
   outline-offset: 3px;
 }
 
-/* Disabled state (for animation locking) */
+/* Disabled */
 .nav-button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
-  transform: scale(1);
+  transform: scale(1) !important;
 }
 
-
-/* ===========================
-   Responsive Design
-   =========================== */
-
-/* Phone: 320px - 767px */
-@media (min-width: 320px) and (max-width: 767px) {
-  :root {
-    /* Ensure minimum 44x44px touch targets, scale up on larger phones */
-    --button-size: clamp(44px, 12vw, 60px);
-    /* Scale letter text proportionally using viewport units */
-    --font-size-arabic: clamp(100px, 18vw, 180px);
-    --font-size-name: clamp(20px, 3.5vw, 28px);
-  }
-
-  .letter-card {
-    padding: clamp(20px, 5vw, 40px);
-    min-width: 240px;
-    width: 85vw;
-  }
-
-  .display-area {
-    padding: 15px;
-    min-height: calc(100vh - 90px);
-  }
-
-  .navigation {
-    gap: clamp(20px, 8vw, 40px);
-    bottom: 15px;
-  }
+/* Nav labels */
+.nav-label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-light);
 }
 
-/* Tablet: 768px - 1024px */
-@media (min-width: 768px) and (max-width: 1024px) {
-  :root {
-    /* Larger touch targets for tablets, maintaining 44px minimum */
-    --button-size: clamp(60px, 8vw, 70px);
-    /* Scale letter text proportionally for tablet screens */
-    --font-size-arabic: clamp(160px, 16vw, 220px);
-    --font-size-name: clamp(28px, 3.5vw, 36px);
-  }
-
-  .letter-card {
-    padding: clamp(40px, 6vw, 60px);
-    min-width: 400px;
-    width: 70vw;
-  }
-
-  .display-area {
-    padding: 30px;
-  }
-
-  .navigation {
-    gap: clamp(40px, 10vw, 60px);
-    bottom: 20px;
-  }
-}
-
-/* Desktop: 1025px+ (content centered with max-width) */
-@media (min-width: 1025px) {
-  .display-area {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .letter-card {
-    max-width: 600px;
-  }
+.nav-label--accent {
+  color: var(--purple-600);
+  font-weight: 600;
+  font-size: 11px;
 }
 
 /* ===========================
-   Utility Classes
+   All Letters Grid Modal
    =========================== */
+.grid-modal {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--transition-ease);
+  /* Ensure modal covers safe areas */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
 
-/* Hide elements visually but keep for screen readers */
+.grid-modal:not([hidden]) {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* hidden attribute targets */
+.grid-modal[hidden] {
+  display: flex !important;
+  /* Keep layout intact, but invisible */
+  opacity: 0;
+  pointer-events: none;
+}
+
+.grid-modal-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  /* Account for safe area padding from parent */
+  box-sizing: border-box;
+}
+
+/* Modal header */
+.grid-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  flex-shrink: 0;
+}
+
+.grid-back-btn {
+  width: 42px;
+  height: 42px;
+  background: #FFFFFF;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
+  color: var(--purple-900);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation; /* Prevent double-tap zoom */
+}
+
+.grid-back-btn:hover {
+  transform: scale(1.08);
+}
+
+.grid-back-btn:active {
+  transform: scale(0.94);
+}
+
+.grid-modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--purple-950);
+}
+
+.grid-modal-placeholder {
+  width: 42px;
+  /* Balances the back button space */
+}
+
+/* Letters grid */
+.letters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px 18px 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  /* Better scrolling on iOS */
+  overscroll-behavior: contain;
+}
+
+/* Individual letter cell */
+.letter-grid-cell {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 14px 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.07);
+  transition: transform 0.2s var(--transition-ease),
+    box-shadow 0.2s var(--transition-ease),
+    border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  min-height: 80px;
+  aspect-ratio: 1;
+  /* Ensure touch targets are accessible */
+  min-width: var(--min-touch);
+  touch-action: manipulation; /* Prevent double-tap zoom */
+}
+
+.letter-grid-cell:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.18);
+}
+
+.letter-grid-cell:active {
+  transform: scale(0.94);
+}
+
+.letter-grid-cell.active-letter {
+  border-color: var(--purple-400);
+  background: var(--purple-50);
+  box-shadow: 0 4px 18px rgba(139, 92, 246, 0.22);
+}
+
+.grid-cell-arabic {
+  font-size: clamp(26px, 7vw, 34px);
+  font-weight: 700;
+  color: var(--purple-900);
+  font-family: 'Scheherazade New', 'Arabic Typesetting', Georgia, serif;
+  line-height: 1;
+}
+
+.grid-cell-name {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--purple-600);
+}
+
+/* Grid modal animation */
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.grid-modal:not([hidden]) .grid-modal-inner {
+  animation: modalSlideUp 0.3s var(--transition-ease) forwards;
+}
+
+/* ===========================
+   Accessibility Utility
+   =========================== */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -597,62 +983,1152 @@ body {
   border-width: 0;
 }
 
-/* Prevent text selection for better touch experience */
-.no-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Apply no-select to interactive elements */
-.letter-card,
-.nav-button {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-
 /* ===========================
-   Dark Mode
+   Responsive — Phones
    =========================== */
+@media (max-width: 390px) {
+  .header-title {
+    font-size: 17px;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-primary-bg: hsl(var(--theme-hue, 230), 40%, 18%);
-    --color-primary-bg-darker: hsl(calc(var(--theme-hue, 230) + 20), 45%, 12%);
-    --color-primary-text: #E0E0E0;
-    /* Light gray text */
-    --color-card-bg: #16213E;
-    /* Dark blue card */
-    --color-card-text: #F5F5F5;
-    /* Near-white letter */
-    --color-button-prev: #C0392B;
-    /* Deep red */
-    --color-button-next: #1A8C84;
-    /* Deep teal */
-    --color-button-hover: #148F85;
-    /* Slightly lighter teal */
+  .progress-badge {
+    padding: 5px 10px;
+  }
+
+  .letters-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 10px 14px 28px;
   }
 
   .letter-card {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    padding: 22px 18px 20px;
+    gap: 10px;
+  }
+
+  .letter-grid-cell {
+    min-height: 70px;
+    padding: 10px 6px 8px;
+    border-radius: 16px;
+  }
+
+  .grid-cell-arabic {
+    font-size: 22px;
+  }
+
+  .grid-cell-name {
+    font-size: 9px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+  .app-header {
+    padding: 12px 16px;
+  }
+
+  .header-title {
+    font-size: 16px;
+  }
+
+  .header-logo {
+    font-size: 20px;
+  }
+
+  .progress-badge {
+    padding: 4px 8px;
+  }
+
+  .progress-badge-text {
+    font-size: 12px;
+  }
+
+  .settings-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .letter-card {
+    padding: 18px 14px 16px;
+    gap: 8px;
+  }
+
+  .letter-circle-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .letter-arabic {
+    font-size: 64px;
+  }
+
+  .letter-name {
+    font-size: 20px;
+  }
+
+  .letter-example-word {
+    font-size: 16px;
+  }
+
+  .letter-example-meaning {
+    font-size: 12px;
   }
 
   .sound-button {
-    background-color: #2A2A4A;
-    border-color: #4ECDC4;
-    color: #E0E0E0;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
   }
 
-  .sound-button:hover {
-    background-color: #1A8C84;
+  .navigation {
+    padding: 8px 12px 16px;
   }
 
-  .progress-indicator {
-    color: var(--color-primary-text);
+  .prev-button,
+  .next-button {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .grid-button {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+  }
+
+  .letters-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: 8px 12px 24px;
+  }
+
+  .letter-grid-cell {
+    min-height: 65px;
+    padding: 8px 4px 6px;
+    border-radius: 14px;
+  }
+
+  .grid-cell-arabic {
+    font-size: 20px;
+  }
+
+  .grid-cell-name {
+    font-size: 8px;
   }
 }
+
+/* Small-height devices (landscape phones) */
+@media (max-height: 600px) {
+  .letter-circle-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .letter-arabic {
+    font-size: 56px;
+  }
+
+  .card-dots {
+    display: none;
+  }
+
+  .letter-card {
+    gap: 6px;
+    padding: 16px 20px 14px;
+    margin: 8px 20px;
+  }
+
+  .letter-name {
+    font-size: 18px;
+  }
+
+  .letter-example-word {
+    font-size: 16px;
+  }
+
+  .letter-example-meaning {
+    font-size: 12px;
+  }
+
+  .sound-button {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .card-divider {
+    width: 40px;
+    height: 2px;
+  }
+
+  .app-header {
+    padding: 10px 18px;
+    height: 56px;
+  }
+
+  .navigation {
+    padding: 8px 16px 12px;
+    min-height: 70px;
+  }
+
+  .progress-section {
+    padding: 6px 20px 4px;
+  }
+}
+
+/* ===========================
+   Responsive — Small phones
+   =========================== */
+@media (min-width: 481px) {
+  .letters-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* ===========================
+   iPad Portrait Mode
+   =========================== */
+/* ===========================
+   iPad Portrait Mode
+   =========================== */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .app-container {
+    max-width: 600px;
+  }
+
+  .letter-card {
+    max-width: 480px;
+    padding: 36px 32px 32px;
+    gap: 16px;
+    margin: 20px auto;
+  }
+
+  .letter-circle-container {
+    width: 180px;
+    height: 180px;
+  }
+
+  .letter-arabic {
+    font-size: 100px;
+  }
+
+  .letter-name {
+    font-size: 32px;
+  }
+
+  .letter-example-word {
+    font-size: 24px;
+  }
+
+  .letter-example-meaning {
+    font-size: 16px;
+  }
+
+  .sound-button {
+    width: 60px;
+    height: 60px;
+    font-size: 26px;
+  }
+
+  .letters-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    padding: 16px 24px 40px;
+  }
+
+  .letter-grid-cell {
+    min-height: 90px;
+    padding: 16px 10px 12px;
+  }
+
+  .grid-cell-arabic {
+    font-size: 32px;
+  }
+
+  .grid-cell-name {
+    font-size: 11px;
+  }
+
+  .navigation {
+    padding: 12px 24px 20px;
+    width: 100%;
+  }
+
+  .prev-button,
+  .next-button {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
+
+  .grid-button {
+    width: 62px;
+    height: 62px;
+    font-size: 24px;
+  }
+
+  /* Ensure center button is visible in portrait */
+  .nav-item--center {
+    display: flex;
+  }
+
+  .progress-section {
+    padding: 12px 20px 8px;
+    width: 100%;
+  }
+}
+    
+/* ===========================
+   Phone Landscape Mode
+   =========================== */
+@media (max-width: 767px) and (orientation: landscape) and (max-height: 500px) {
+  body {
+    overflow: auto;
+  }
+
+  .app-container {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .display-area {
+    padding: 4px 16px 0;
+  }
+
+  .letter-card {
+    padding: 10px 16px;
+    gap: 4px;
+    max-width: 320px;
+  }
+
+  .letter-circle-container {
+    width: 80px;
+    height: 80px;
+  }
+
+  .letter-arabic {
+    font-size: 44px;
+  }
+
+  .letter-name {
+    font-size: 16px;
+  }
+
+  .letter-example {
+    gap: 2px;
+  }
+
+  .letter-example-word {
+    font-size: 14px;
+  }
+
+  .letter-example-meaning {
+    font-size: 11px;
+  }
+
+  .sound-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .card-divider {
+    width: 32px;
+    height: 2px;
+  }
+
+  .progress-section {
+    padding: 4px 16px 2px;
+  }
+
+  .navigation {
+    padding: 6px 12px 10px;
+    height: 60px;
+  }
+
+  .prev-button,
+  .next-button {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+  }
+
+  .grid-button {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+  }
+}
+
+/* ===========================
+   iPad Short Height (landscape with keyboard or split view)
+   =========================== */
+@media (min-width: 768px) and (max-height: 700px) and (orientation: portrait) {
+  .letter-card {
+    padding: 24px 28px 22px;
+    gap: 10px;
+    margin: 12px auto;
+  }
+
+  .letter-circle-container {
+    width: 140px;
+    height: 140px;
+  }
+
+  .letter-arabic {
+    font-size: 80px;
+  }
+
+  .letter-name {
+    font-size: 26px;
+  }
+
+  .card-dots {
+    gap: 6px;
+  }
+
+  .card-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .sound-button {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+
+  .letter-example-word {
+    font-size: 20px;
+  }
+
+  .letter-example-meaning {
+    font-size: 14px;
+  }
+
+  .progress-section {
+    padding: 10px 24px 6px;
+  }
+
+  .navigation {
+    padding: 10px 24px 18px;
+  }
+}
+
+/* ===========================
+   Layout Defaults (Phone)
+   — Inline panel & sidebar hidden
+   =========================== */
+.app-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.inline-grid-panel {
+  display: none;
+}
+
+.desktop-sidebar {
+  display: none;
+}
+
+.keyboard-hint {
+  display: none;
+}
+
+/* ===========================
+   iPad Landscape Split-View
+   min-width: 768px + landscape
+   =========================== */
+@media (min-width: 768px) and (orientation: landscape) {
+
+  /* Page-level: side-by-side row */
+  body {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0; /* Remove safe area padding for tablets */
+  }
+
+  /* Main container takes available space */
+  .app-container {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    border: none;
+    box-shadow: none;
+  }
+
+  .app-header {
+    padding: 12px 32px;
+    height: 60px;
+  }
+
+  .header-logo {
+    font-size: 28px;
+  }
+
+  .header-title {
+    font-size: 24px;
+  }
+
+  .progress-badge {
+    padding: 8px 16px;
+  }
+
+  .settings-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  /* Body becomes a horizontal split */
+  .app-body {
+    flex-direction: row;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    gap: 28px;
+    padding: 0 0 0 32px;
+  }
+
+  /* Left: display area (card + progress + nav) */
+  .display-area {
+    flex: 0 0 380px;
+    min-width: 380px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: 1px solid var(--purple-100);
+  }
+
+  /* Shrink card a bit so the nav fits without scroll */
+  .letter-card {
+    gap: 10px;
+    padding: 24px 22px 22px;
+    max-width: 300px;
+    width: 300px;
+  }
+
+  .letter-circle-container {
+    width: 150px;
+    height: 150px;
+  }
+
+  .letter-arabic {
+    font-size: 80px;
+  }
+
+  .letter-name {
+    font-size: 26px;
+  }
+
+  .letter-example-word {
+    font-size: 20px;
+  }
+
+  .letter-example-meaning {
+    font-size: 14px;
+  }
+
+  .sound-button {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  /* Right: inline letter grid — always visible */
+  .inline-grid-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    background: #FFFFFF;
+    padding: 20px 16px 16px;
+    gap: 10px;
+    border-radius: 24px;
+    margin: 12px 32px 20px 0;
+  }
+
+  .inline-grid-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--purple-950);
+    flex-shrink: 0;
+  }
+
+  .inline-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    overscroll-behavior: contain; /* Better iOS scrolling */
+  }
+
+  /* Inline grid cells — compact for landscape */
+  .inline-grid .letter-grid-cell {
+    min-height: 68px;
+    aspect-ratio: auto;
+    padding: 10px 4px 8px;
+    border-radius: 14px;
+  }
+
+  .inline-grid .grid-cell-arabic {
+    font-size: 24px;
+  }
+
+  .inline-grid .grid-cell-name {
+    font-size: 9px;
+  }
+
+  /* Hide the modal grid button from the nav — inline panel replaces it */
+  .nav-item--center {
+    display: none;
+  }
+
+  /* Make prev/next fill the gap left by hiding center button */
+  .navigation {
+    justify-content: center;
+    gap: 24px;
+    padding: 8px 24px 14px;
+  }
+
+  .progress-section {
+    padding: 6px 24px 4px;
+    width: 340px;
+  }
+
+  .progress-dots {
+    display: none;
+  }
+
+  /* These no longer have the grid modal, so close button in header still works */
+  .settings-btn {
+    display: none;
+  }
+
+  /* Phone modal never shows on this breakpoint */
+  .grid-modal {
+    display: none !important;
+  }
+}
+
+/* ===========================
+   Desktop / Laptop Layout
+   min-width: 1280px
+   =========================== */
+@media (min-width: 1280px) {
+
+  body {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0; /* Remove safe area padding for desktop */
+  }
+
+  /* === SIDEBAR === */
+  .desktop-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    flex-shrink: 0;
+    height: 100vh;
+    height: 100dvh;
+    background: #FFFFFF;
+    border-right: 1px solid var(--purple-100);
+    box-shadow: 2px 0 16px rgba(139, 92, 246, 0.05);
+    overflow: hidden;
+    padding: 24px 20px;
+    gap: 14px;
+    z-index: 5;
+  }
+
+  .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo {
+    font-size: 26px;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--purple-950);
+  }
+
+  .sidebar-section-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--purple-500);
+    flex-shrink: 0;
+    padding: 0 4px;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-letter-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-right: 4px;
+  }
+
+  /* Scrollbar styling for sidebar */
+  .sidebar-letter-list::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar-letter-list::-webkit-scrollbar-track {
+    background: var(--purple-50);
+    border-radius: 3px;
+  }
+
+  .sidebar-letter-list::-webkit-scrollbar-thumb {
+    background: var(--purple-300);
+    border-radius: 3px;
+  }
+
+  .sidebar-letter-list::-webkit-scrollbar-thumb:hover {
+    background: var(--purple-400);
+  }
+
+  /* Each row in the sidebar list */
+  .sidebar-letter-list .sidebar-letter-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .sidebar-letter-row:hover {
+    background: var(--purple-50);
+    transform: translateX(2px);
+  }
+
+  .sidebar-letter-row.active {
+    background: var(--purple-100);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+  }
+
+  .sidebar-letter-row .sidebar-row-arabic {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--purple-900);
+    line-height: 1;
+    min-width: 32px;
+    text-align: center;
+    font-family: 'Scheherazade New', 'Arabic Typesetting', 'Traditional Arabic', Georgia, serif;
+  }
+
+  .sidebar-letter-row .sidebar-row-name {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--purple-700);
+    flex: 1;
+  }
+
+  .sidebar-letter-row.active .sidebar-row-name {
+    font-weight: 700;
+    color: var(--purple-900);
+  }
+
+  /* Progress at the bottom of sidebar */
+  .sidebar-progress-footer {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--purple-100);
+  }
+
+  .sidebar-progress-label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--purple-700);
+    text-align: center;
+  }
+
+  .progress-current-sidebar {
+    color: var(--purple-600);
+    font-weight: 700;
+  }
+
+  .sidebar-progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--purple-100);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .sidebar-progress-fill {
+    height: 100%;
+    width: 4%;
+    background: linear-gradient(90deg, var(--purple-500), var(--purple-600));
+    border-radius: var(--radius-full);
+    transition: width 0.4s var(--transition-ease);
+  }
+
+  /* === MAIN APP AREA === */
+  .app-container {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    border: none;
+    box-shadow: none;
+    background: var(--color-bg);
+    padding: 0; /* Remove safe area padding for desktop */
+  }
+
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    height: auto;
+    flex-shrink: 0;
+    background: transparent;
+  }
+
+  .settings-btn {
+    display: none !important;
+  }
+
+  .header-brand {
+    gap: 12px;
+  }
+
+  .header-logo {
+    font-size: 28px;
+  }
+
+  .header-title {
+    font-size: 22px;
+  }
+
+  .progress-badge {
+    padding: 8px 16px;
+  }
+
+  .progress-badge-icon {
+    font-size: 16px;
+  }
+
+  .progress-badge-text {
+    font-size: 14px;
+  }
+
+  /* Body area: just the card panel, no inline grid */
+  .app-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    padding-top: 40px;
+  }
+
+  /* Inline panel hidden — sidebar takes the letter navigation role */
+  .inline-grid-panel {
+    display: none;
+  }
+
+  /* Display area grows to fill the center */
+  .display-area {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    border-right: none;
+    flex: 1;
+    padding: 20px;
+  }
+
+  /* Larger card for desktop */
+  .letter-card {
+    width: 100%;
+    max-width: 480px;
+    gap: 18px;
+    padding: 40px 40px 36px;
+    background: var(--color-card-bg);
+    box-shadow: 0 8px 40px rgba(139, 92, 246, 0.12),
+      0 2px 8px rgba(139, 92, 246, 0.06);
+  }
+
+  .card-dots {
+    display: flex;
+  }
+
+  .card-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .letter-circle-container {
+    width: 200px;
+    height: 200px;
+  }
+
+  .letter-arabic {
+    font-size: 120px;
+  }
+
+  .letter-name {
+    font-size: 34px;
+  }
+
+  .letter-example-word {
+    font-size: 26px;
+  }
+
+  .letter-example-meaning {
+    font-size: 17px;
+  }
+
+  .sound-button {
+    width: 62px;
+    height: 62px;
+    font-size: 26px;
+  }
+
+  .card-divider {
+    width: 64px;
+    height: 4px;
+  }
+
+  .progress-section {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  /* Prev/Next flanking buttons — positioned around the card */
+  .navigation {
+    width: 100%;
+    max-width: 640px;
+    justify-content: center;
+    gap: 120px;
+    padding: 16px 0 24px;
+    margin-top: 10px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* Hide the center "All Letters" grid button on desktop */
+  .nav-item--center {
+    display: none;
+  }
+
+  /* Bigger nav buttons on desktop */
+  .prev-button,
+  .next-button {
+    width: 56px;
+    height: 56px;
+    font-size: 22px;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
+  }
+
+  .prev-button:hover {
+    box-shadow: 0 6px 24px rgba(239, 68, 68, 0.3);
+  }
+
+  .next-button:hover {
+    box-shadow: 0 6px 24px rgba(34, 197, 94, 0.3);
+  }
+
+  /* Keyboard shortcut hint */
+  .keyboard-hint {
+    display: block;
+    position: fixed;
+    bottom: 24px;
+    right: 32px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--purple-500);
+    pointer-events: none;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .keyboard-hint kbd {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid var(--purple-200);
+    border-radius: 6px;
+    background: #FFFFFF;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--purple-700);
+    margin: 0 2px;
+    box-shadow: 0 2px 4px rgba(139, 92, 246, 0.1);
+  }
+
+  /* Phone modal never shows on desktop */
+  .grid-modal {
+    display: none !important;
+  }
+}
+
+/* ===========================
+   Dark Mode - DISABLED FOR NOW
+   Force light mode for consistent design
+   =========================== */
+/* Commenting out dark mode to ensure light background
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1A1625;
+    --color-card-bg: #231D35;
+    --color-text-primary: #EDE9FE;
+    --color-text-muted: #A78BFA;
+    --color-text-light: #9CA3AF;
+    --color-prev: #3F1515;
+    --color-prev-icon: #F87171;
+    --color-next: #14391F;
+    --color-next-icon: #4ADE80;
+  }
+
+  body {
+    background: var(--color-bg);
+  }
+
+  .app-header,
+  .navigation {
+    background: #1E1730;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .letter-card {
+    background: var(--color-card-bg);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .letter-circle-container {
+    background: #2D2248;
+  }
+
+  .letter-arabic {
+    color: var(--purple-200);
+  }
+
+  .letter-name {
+    color: var(--purple-100);
+  }
+
+  .letter-example-word {
+    color: var(--purple-300);
+  }
+
+  .letter-example-meaning {
+    color: var(--purple-400);
+  }
+
+  .settings-btn,
+  .grid-back-btn {
+    background: #2D2248;
+    color: var(--purple-300);
+  }
+
+  .letter-grid-cell {
+    background: #2D2248;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .letter-grid-cell.active-letter {
+    background: #3D2E5E;
+    border-color: var(--purple-500);
+  }
+
+  .grid-cell-arabic {
+    color: var(--purple-200);
+  }
+
+  .grid-cell-name {
+    color: var(--purple-400);
+  }
+
+  .progress-badge {
+    background: #2D2248;
+  }
+
+  .swipe-hint-arrow,
+  .swipe-hint-text {
+    color: var(--purple-400);
+  }
+
+  .progress-bar-track {
+    background: #2D2248;
+  }
+
+  .progress-dot {
+    background: #3D2E5E;
+  }
+
+  .progress-dot.active {
+    background: var(--purple-500);
+  }
+}
+*/

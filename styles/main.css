@@ -94,7 +94,8 @@ html {
   font-size: 16px;
   height: 100%;
   /* Support for safe area insets (notches) */
-  height: 100dvh; /* Dynamic viewport height */
+  height: 100dvh;
+  /* Dynamic viewport height */
 }
 
 body {
@@ -219,7 +220,8 @@ body {
   -webkit-tap-highlight-color: transparent;
   color: var(--purple-700);
   font-weight: 700;
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  touch-action: manipulation;
+  /* Prevent double-tap zoom */
 }
 
 .settings-btn:hover {
@@ -386,7 +388,8 @@ body {
   transition: transform var(--transition-speed) var(--transition-ease),
     box-shadow var(--transition-speed) var(--transition-ease);
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  touch-action: manipulation;
+  /* Prevent double-tap zoom */
 }
 
 .sound-button:hover {
@@ -710,7 +713,8 @@ body {
   user-select: none;
   transition: transform var(--transition-speed) var(--transition-ease),
     box-shadow var(--transition-speed) var(--transition-ease);
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  touch-action: manipulation;
+  /* Prevent double-tap zoom */
 }
 
 /* Prev / Next buttons */
@@ -858,7 +862,8 @@ body {
   box-shadow: 0 2px 10px rgba(139, 92, 246, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  touch-action: manipulation;
+  /* Prevent double-tap zoom */
 }
 
 .grid-back-btn:hover {
@@ -918,7 +923,8 @@ body {
   aspect-ratio: 1;
   /* Ensure touch targets are accessible */
   min-width: var(--min-touch);
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  touch-action: manipulation;
+  /* Prevent double-tap zoom */
 }
 
 .letter-grid-cell:hover {
@@ -1283,7 +1289,7 @@ body {
     width: 100%;
   }
 }
-    
+
 /* ===========================
    Phone Landscape Mode
    =========================== */
@@ -1463,7 +1469,8 @@ body {
     overflow: hidden;
     height: 100vh;
     height: 100dvh;
-    padding: 0; /* Remove safe area padding for tablets */
+    padding: 0;
+    /* Remove safe area padding for tablets */
   }
 
   /* Main container takes available space */
@@ -1589,7 +1596,8 @@ body {
     flex: 1;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 8px;
-    overscroll-behavior: contain; /* Better iOS scrolling */
+    overscroll-behavior: contain;
+    /* Better iOS scrolling */
   }
 
   /* Inline grid cells — compact for landscape */
@@ -1653,24 +1661,13 @@ body {
     overflow: hidden;
     height: 100vh;
     height: 100dvh;
-    padding: 0; /* Remove safe area padding for desktop */
+    padding: 0;
+    /* Remove safe area padding for desktop */
   }
 
-  /* === SIDEBAR === */
+  /* === SIDEBAR: hidden on desktop — inline grid replaces it === */
   .desktop-sidebar {
-    display: flex;
-    flex-direction: column;
-    width: 280px;
-    flex-shrink: 0;
-    height: 100vh;
-    height: 100dvh;
-    background: #FFFFFF;
-    border-right: 1px solid var(--purple-100);
-    box-shadow: 2px 0 16px rgba(139, 92, 246, 0.05);
-    overflow: hidden;
-    padding: 24px 20px;
-    gap: 14px;
-    z-index: 5;
+    display: none;
   }
 
   .sidebar-brand {
@@ -1833,7 +1830,8 @@ body {
     border: none;
     box-shadow: none;
     background: var(--color-bg);
-    padding: 0; /* Remove safe area padding for desktop */
+    padding: 0;
+    /* Remove safe area padding for desktop */
   }
 
   .app-header {
@@ -1850,17 +1848,12 @@ body {
     display: none !important;
   }
 
+  /* Header brand is visible — sidebar is hidden on desktop */
   .header-brand {
+    display: flex;
     gap: 12px;
   }
 
-  .header-logo {
-    font-size: 28px;
-  }
-
-  .header-title {
-    font-size: 22px;
-  }
 
   .progress-badge {
     padding: 8px 16px;
@@ -1874,35 +1867,78 @@ body {
     font-size: 14px;
   }
 
-  /* Body area: just the card panel, no inline grid */
+  /* Body area: side-by-side split (card on left, inline grid on right) */
   .app-body {
     flex: 1;
     min-height: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-    padding-top: 40px;
+    flex-direction: row;
+    align-items: stretch;
+    overflow: hidden;
+    gap: 28px;
+    padding: 0 32px 0 32px;
   }
 
-  /* Inline panel hidden — sidebar takes the letter navigation role */
+  /* Show inline grid panel on desktop — complements the sidebar */
   .inline-grid-panel {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    background: #FFFFFF;
+    padding: 24px 20px 20px;
+    gap: 10px;
+    border-radius: 24px;
+    margin: 20px 0 24px 0;
+    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.08);
   }
 
-  /* Display area grows to fill the center */
+  .inline-grid-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--purple-950);
+    flex-shrink: 0;
+  }
+
+  .inline-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    padding-bottom: 8px;
+    overscroll-behavior: contain;
+  }
+
+  .inline-grid .letter-grid-cell {
+    min-height: 80px;
+    aspect-ratio: auto;
+    padding: 12px 6px 10px;
+    border-radius: 16px;
+  }
+
+  .inline-grid .grid-cell-arabic {
+    font-size: 28px;
+  }
+
+  .inline-grid .grid-cell-name {
+    font-size: 10px;
+  }
+
+  /* Display area: fixed-width left column, inline grid on the right */
   .display-area {
-    width: 100%;
-    max-width: 640px;
+    flex: 0 0 420px;
+    min-width: 420px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0;
-    border-right: none;
-    flex: 1;
-    padding: 20px;
+    border-right: 1px solid var(--purple-100);
+    padding: 20px 28px 20px 0;
   }
 
   /* Larger card for desktop */

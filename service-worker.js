@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hijaiyah-app-v1';
+const CACHE_NAME = 'hijaiyah-app-v3';
 const ASSETS = [
     './',
     './index.html',
@@ -6,7 +6,7 @@ const ASSETS = [
     './scripts/data.js',
     './scripts/app.js',
     './scripts/ui.js',
-    './favicon.ico',
+    './favicon.png',
     './manifest.json'
 ];
 

@@ -45,6 +45,23 @@ class UIManager {
       }
     };
 
+    // Speech Synthesis checking
+    this.speechSynth = typeof window !== 'undefined' ? window.speechSynthesis : null;
+    this.voices = [];
+    this.arabicVoiceStr = null;
+    
+    if (this.speechSynth) {
+      const loadVoices = () => {
+        this.voices = this.speechSynth.getVoices();
+        const arabicVoice = this.voices.find(v => v.lang.startsWith('ar'));
+        if (arabicVoice) this.arabicVoiceStr = arabicVoice;
+      };
+      loadVoices();
+      if (this.speechSynth.onvoiceschanged !== undefined) {
+        this.speechSynth.onvoiceschanged = loadVoices;
+      }
+    }
+
     // Touch/swipe tracking properties
     this.touchStartX = 0;
     this.touchStartY = 0;
@@ -76,7 +93,7 @@ class UIManager {
     if (this.soundButton) {
       this.soundButton.addEventListener('click', () => {
         const letter = this.app.getCurrentLetter();
-        if (letter && letter.audio) this.playAudio(letter.audio);
+        if (letter) this.playPronunciation(letter);
       });
     }
 
@@ -309,6 +326,40 @@ class UIManager {
   }
 
   /**
+   * Play pronunciation using Hybrid Voice & Audio
+   * @param {Object} letter - Letter object
+   */
+  playPronunciation(letter) {
+      if (!letter) return;
+      
+      // If we have an Arabic TTS voice, use that
+      if (this.speechSynth && this.arabicVoiceStr) {
+         if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('jsdom')) return;
+
+         try {
+             this.speechSynth.cancel();
+             const utterance = new SpeechSynthesisUtterance(letter.arabic);
+             utterance.lang = 'ar-SA';
+             utterance.voice = this.arabicVoiceStr;
+             utterance.rate = 0.9;
+             // fallback to recorded audio if TTS errors at flight time
+             utterance.onerror = () => {
+                 if (letter.audio) this.playAudio(letter.audio); 
+             };
+             this.speechSynth.speak(utterance);
+             return; // TTS succeeded, return early
+         } catch (e) {
+             // fallback to recorded voice on error
+         }
+      }
+      
+      // Fallback to recorded audio file if no Arabic TTS voice available
+      if (letter.audio) {
+          this.playAudio(letter.audio);
+      }
+  }
+
+  /**
    * Update the progress indicator
    */
   updateProgress() {
@@ -351,7 +402,7 @@ class UIManager {
     this.updateProgress();
 
     // Play pronunciation audio
-    if (letter.audio) this.playAudio(letter.audio);
+    this.playPronunciation(letter);
 
     // Trigger confetti on the last letter
     if (this.app.getCurrentIndex() === 27) {

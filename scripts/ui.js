@@ -53,18 +53,6 @@ class UIManager {
       throw new Error('Required DOM elements not found');
     }
 
-    // Audio player
-    this.audio = (typeof window !== 'undefined' && window.Audio)
-      ? new window.Audio()
-      : { play: () => Promise.resolve(), src: '' };
-
-    this.audio.onerror = () => {
-      if (this.soundButton) {
-        this.soundButton.classList.add('sound-error');
-        setTimeout(() => this.soundButton.classList.remove('sound-error'), 600);
-      }
-    };
-
     // Speech Synthesis checking
     this.speechSynth = typeof window !== 'undefined' ? window.speechSynthesis : null;
     this.voices = [];
@@ -457,58 +445,22 @@ class UIManager {
   }
 
   /* ----------------------
-     Audio
-  ---------------------- */
-  playAudio(src) {
-    if (!src) return;
-
-    // Skip in JSDOM test environments
-    if (typeof navigator !== 'undefined' && navigator.userAgent &&
-      navigator.userAgent.includes('jsdom')) return;
-
-    this.audio.src = src;
-    try {
-      const playPromise = this.audio.play();
-      if (playPromise && playPromise.catch) {
-        playPromise.catch(() => { });
-      }
-    } catch (e) {
-      // Swallow synchronous errors (e.g. JSDOM)
-    }
-  }
-
-  /* ----------------------
-     Hybrid Voice & Audio
+     Pronunciation (Speech Synthesis)
   ---------------------- */
   playPronunciation(letter) {
-      if (!letter) return;
-      
-      // If we have an Arabic TTS voice, use that
-      if (this.speechSynth && this.arabicVoiceStr) {
-         if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.includes('jsdom')) return;
-
-         try {
-             this.speechSynth.cancel();
-             const utterance = new SpeechSynthesisUtterance(letter.arabic);
-             utterance.lang = 'ar-SA';
-             utterance.voice = this.arabicVoiceStr;
-             utterance.rate = 0.9;
-             // fallback to recorded audio if TTS errors at flight time
-             utterance.onerror = () => {
-                 if (letter.audio) this.playAudio(letter.audio); 
-             };
-             this.speechSynth.speak(utterance);
-             return; // TTS succeeded, return early
-         } catch (e) {
-             console.error('Speech error:', e);
-             // fallback to recorded voice on error
-         }
-      }
-      
-      // Fallback to recorded audio file if no Arabic TTS voice available
-      if (letter.audio) {
-          this.playAudio(letter.audio);
-      }
+    if (!letter || !this.speechSynth) return;
+    if (typeof navigator !== 'undefined' && navigator.userAgent &&
+      navigator.userAgent.includes('jsdom')) return;
+    try {
+      this.speechSynth.cancel();
+      const utterance = new SpeechSynthesisUtterance(letter.arabic);
+      utterance.lang = 'ar-SA';
+      if (this.arabicVoiceStr) utterance.voice = this.arabicVoiceStr;
+      utterance.rate = 0.9;
+      this.speechSynth.speak(utterance);
+    } catch (e) {
+      console.error('Speech error:', e);
+    }
   }
 
   /* ----------------------

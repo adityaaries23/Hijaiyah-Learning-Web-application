@@ -1,5 +1,5 @@
-const CACHE_NAME = 'hijaiyah-app-v3';
-const ASSETS = [
+const CACHE_NAME = 'hijaiyah-app-v4';
+const ALL_ASSETS = [
     './',
     './index.html',
     './styles/main.css',
@@ -9,16 +9,6 @@ const ASSETS = [
     './favicon.png',
     './manifest.json'
 ];
-
-// Combine basic assets with all audio files
-const HIJAIYAH_AUDIO = [
-    'alif.mp3', 'ba.mp3', 'ta.mp3', 'tsa.mp3', 'jim.mp3', 'ha.mp3', 'kha.mp3',
-    'dal.mp3', 'dzal.mp3', 'ra.mp3', 'zay.mp3', 'sin.mp3', 'syin.mp3', 'shad.mp3',
-    'dhad.mp3', 'tha.mp3', 'zha.mp3', 'ain.mp3', 'ghain.mp3', 'fa.mp3', 'qaf.mp3',
-    'kaf.mp3', 'lam.mp3', 'mim.mp3', 'nun.mp3', 'waw.mp3', 'ha2.mp3', 'ya.mp3'
-].map(file => `./audio/${file}`);
-
-const ALL_ASSETS = [...ASSETS, ...HIJAIYAH_AUDIO];
 
 // Install Event
 self.addEventListener('install', event => {

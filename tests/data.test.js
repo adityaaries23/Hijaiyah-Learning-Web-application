@@ -117,28 +117,3 @@ test('Last letter is Ya', () => {
   );
 });
 
-test('Each letter has an audio field pointing to audio/*.mp3', () => {
-  HIJAIYAH_LETTERS.forEach((letter, index) => {
-    assert.ok(
-      letter.hasOwnProperty('audio'),
-      `Letter at index ${index} (${letter.name}) should have an 'audio' field`
-    );
-    assert.strictEqual(
-      typeof letter.audio,
-      'string',
-      `Letter at index ${index} audio should be a string`
-    );
-    assert.ok(
-      letter.audio.startsWith('audio/') && letter.audio.endsWith('.mp3'),
-      `Letter at index ${index} audio path should be 'audio/*.mp3', got '${letter.audio}'`
-    );
-  });
-});
-
-test('First letter Alif has correct audio path', () => {
-  assert.strictEqual(
-    HIJAIYAH_LETTERS[0].audio,
-    'audio/alif.mp3',
-    'Alif audio path should be audio/alif.mp3'
-  );
-});
